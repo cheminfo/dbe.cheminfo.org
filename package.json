@@ -1,0 +1,58 @@
+{
+  "name": "dbe-cheminfo-org",
+  "version": "1.0.0",
+  "description": "Degree of unsaturation both ways: read the DBE off a molecular formula, count it off a drawn structure, and see where sulfur and phosphorus make the two disagree.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "vite build",
+    "check-deploy": "node node_modules/react-cheminfo/bin/check-deploy.mjs",
+    "check-tokens": "node node_modules/react-cheminfo/bin/check-tokens.mjs src",
+    "check-types": "tsc --noEmit",
+    "dev": "vite",
+    "eslint": "eslint .",
+    "eslint-fix": "eslint . --fix",
+    "og-image": "node scripts/generateOgImage.ts",
+    "prettier": "prettier --check .",
+    "prettier-write": "prettier --write .",
+    "preview": "vite preview",
+    "test": "npm run test-only && npm run check-types && npm run check-tokens && npm run check-deploy && npm run eslint && npm run prettier",
+    "test-e2e": "playwright test",
+    "test-e2e-ui": "playwright test --ui",
+    "test-only": "vitest run --coverage"
+  },
+  "overrides": {
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "dependencies": {
+    "@blueprintjs/core": "^6.19.0",
+    "@blueprintjs/icons": "^6.14.0",
+    "@preact/signals-react": "^3.12.0",
+    "katex": "^0.18.7",
+    "mf-parser": "^3.9.3",
+    "ml-xsadd": "^3.0.1",
+    "openchemlib": "^9.25.0",
+    "openchemlib-utils": "^8.18.0",
+    "react": "^19.3.0",
+    "react-cheminfo": "file:../../react-cheminfo",
+    "react-dom": "^19.3.0",
+    "react-mf": "^3.1.1",
+    "react-ocl": "^8.7.2"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^26.6.1",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "@vitest/coverage-istanbul": "^4.1.11",
+    "@zakodium/tsconfig": "^1.0.5",
+    "eslint": "^9.39.5",
+    "eslint-config-zakodium": "^20.1.0",
+    "prettier": "^3.9.7",
+    "typescript": "^6.0.3",
+    "vite": "^8.3.0",
+    "vitest": "^4.1.11"
+  }
+}

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="dbe.cheminfo.org">
+  <title>dbe.cheminfo.org</title>
+  <!-- A ring with a double bond drawn inside it: the two things a DBE adds up,
+       and the equals sign the E of the name already is. Same geometry as the
+       mark in react-cheminfo's glyphs.tsx, with the colours written out: a file
+       served on its own cannot read the page's tokens. -->
+  <rect width="32" height="32" rx="7" fill="#63123f" />
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path
+      d="M16 5 25.53 10.5 25.53 21.5 16 27 6.47 21.5 6.47 10.5Z"
+      stroke="#ffffff"
+      stroke-width="2.4"
+    />
+    <path
+      d="M10.8 12.9h10.4M10.8 19.1h10.4"
+      stroke="#10b981"
+      stroke-width="2.9"
+    />
+  </g>
+</svg>

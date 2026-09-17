@@ -1,0 +1,152 @@
+:root {
+  /* The neutrals, the geometry and the type come from react-cheminfo's
+     chrome.css, and the two colours this site owns from <SiteTheme />. */
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/*
+ * Blueprint's own focus selectors (.bp6-tag:focus and friends) out-specify a
+ * plain universal rule, so an interactive tag keeps a blue ring on click
+ * without the !important here.
+ */
+*:focus,
+*:focus-visible {
+  outline: none !important;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  margin: 0;
+}
+
+/* The 15px goes on `body`, never on `html`: `rem` resolves against the root, so
+   putting it there would shrink every shared measurement by 6.25%. */
+body {
+  background: var(--surface-sunken);
+  color: var(--text);
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* A form control does not inherit the page font: it would otherwise be set in
+   the UA's Helvetica beside text in ours. */
+input,
+textarea,
+select,
+button {
+  font-family: inherit;
+}
+
+a {
+  color: var(--accent);
+}
+
+/* The tool fills the screen it is opened on and grows past it when what is on
+   the page needs more room. A fixed height would instead let flex shrink the
+   panels below their own content, and a Blueprint callout compressed to a few
+   pixels paints its text over whatever follows it. */
+.app-screen {
+  display: flex;
+  min-height: 100dvh;
+  flex-direction: column;
+}
+
+.app-screen > main {
+  flex: 1 1 auto;
+}
+
+.app-main {
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  gap: 12px;
+}
+
+/* ── The calculator: the two halves, side by side ─────────────────────────── */
+
+/*
+ * One column each for the formula and the drawing, because the page exists to
+ * be read across rather than down: the two answers have to be visible at once
+ * or there is nothing to compare. Under 60rem there is no width for two, and
+ * the drawing goes under the formula rather than into a sliver.
+ */
+.calc-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.calc-pane {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 10px;
+}
+
+@media (min-width: 60rem) {
+  .calc-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+/* The heading and the action that empties both halves. */
+.calc-intro {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.calc-intro__title {
+  margin: 0;
+  font-size: 1.125rem;
+}
+
+.calc-intro__lead {
+  margin: 2px 0 0;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+/* A phone has no width to spend on nested gutters: the page and its cards keep
+   just enough to separate an edge from a line of text. */
+@media (max-width: 600px) {
+  .app-main {
+    padding: 6px;
+  }
+
+  .app-main .bp6-card {
+    padding: 8px;
+  }
+}
+
+/* Students print the reference. Let them, without the chrome. */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: var(--surface);
+  }
+
+  .calc-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  a[href]::after {
+    content: '';
+  }
+}

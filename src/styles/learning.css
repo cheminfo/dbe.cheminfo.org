@@ -1,0 +1,501 @@
+/*
+ * The three teaching pages: the explanation, the exercises and the printable
+ * sheet.
+ *
+ * Every colour here is a family token or the site's own pair. The two numbers
+ * the site exists to compare are set in those two colours — the formula's in
+ * `--brand`, the drawing's in the readable form of the answering colour — so a
+ * reader learns which number is which before reading either label.
+ */
+
+/* ── The explanation ─────────────────────────────────────────────────────── */
+
+.learn {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.learn-step {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.learn-step__heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.learn-step__heading h1 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.learn-step__prose {
+  max-width: 68ch;
+  margin: 0;
+}
+
+.learn-step__notice {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+.learn-readout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 10px;
+}
+
+.learn-readout__card {
+  display: flex;
+  min-width: 15rem;
+  flex: 1 1 15rem;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-sunken);
+  gap: 4px;
+}
+
+.learn-readout__label {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.learn-readout__subject {
+  font-size: 1.15rem;
+}
+
+.learn-readout__number {
+  color: var(--brand);
+  font-size: 2.25rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+/* The drawing answers in the second colour, in the form that is readable as
+   text: the mark's emerald sits around 2:1 on white. */
+.learn-readout__card--drawing .learn-readout__number {
+  color: var(--brand-alt-text, var(--brand-alt));
+}
+
+.learn-readout__detail {
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+  text-align: center;
+}
+
+/* ── The exercises ───────────────────────────────────────────────────────── */
+
+.exercises-layout {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.exercises-sidebar {
+  display: flex;
+  width: 24rem;
+  flex: 0 0 24rem;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.exercises-open {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
+/* A deck beside the question leaves the question a sliver on a phone, so the
+   question goes under the deck instead. */
+@media (max-width: 899px) {
+  .exercises-layout {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .exercises-sidebar {
+    width: auto;
+    flex: none;
+  }
+}
+
+.exercise-deck {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.exercise-deck__list {
+  display: flex;
+  overflow: auto;
+  max-height: 30rem;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.exercise-deck__item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 5px 7px;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  background: none;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  gap: 6px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.exercise-deck__item:hover {
+  background: var(--surface-sunken);
+  color: var(--text);
+}
+
+/* The brand tint says which question is open, exactly as it does in the bar. */
+.exercise-deck__item--active,
+.exercise-deck__item--active:hover {
+  border-color: color-mix(in oklab, var(--accent) 30%, white);
+  background: color-mix(in oklab, var(--accent) 12%, white);
+  color: var(--accent);
+}
+
+.exercise-deck__title {
+  flex: 1 1 6rem;
+  min-width: 0;
+  font-weight: 600;
+}
+
+/* One block, so a narrow deck wraps the tags as a group rather than splitting
+   them across two lines. */
+.exercise-deck__tags {
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.exercise-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.exercise-card__heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.exercise-card__heading h1 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.exercise-card__prose {
+  max-width: 68ch;
+  margin: 0;
+}
+
+.exercise-card__figure {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-sunken);
+  gap: 12px;
+}
+
+/* A formula is the question itself here, so it is set at reading distance
+   rather than as a line of body text. */
+.exercise-card__mf {
+  font-size: 1.75rem;
+}
+
+.exercise-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.exercise-verdict {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.answer-box {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.answer-box__field {
+  display: flex;
+  width: 11rem;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.answer-box__label {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* ── The seeded series ───────────────────────────────────────────────────── */
+
+.series {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.series__lead {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+.series__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.series__field {
+  display: flex;
+  min-width: 7rem;
+  flex: 1 1 7rem;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.series__label {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.series__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* ── The printable sheet ─────────────────────────────────────────────────── */
+
+.sheet-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+
+.sheet-head h1 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.sheet-lead {
+  max-width: 62ch;
+  margin: 2px 0 0;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+.sheet-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  gap: 10px;
+  list-style: none;
+}
+
+.sheet-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.sheet-legend__swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+/* The line that exists only on paper: it says whose sheet this is and what the
+   three heading colours mean, which the legend on screen says instead. */
+.sheet-print-line {
+  display: none;
+}
+
+/* ── The rule, at the top of the sheet ───────────────────────────────────── */
+
+.sheet-rule {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+  gap: 6px;
+}
+
+.sheet-rule__title {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.sheet-rule__lead,
+.sheet-rule__note {
+  max-width: 68ch;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+/* A formula is the line the eye lands on, so it keeps its size on a narrow
+   window and scrolls rather than wrapping in the middle of a sum. */
+.sheet-rule__display {
+  display: block;
+  overflow-x: auto;
+  padding: 2px 0;
+}
+
+.sheet-rule__legend {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  gap: 3px 16px;
+  list-style: none;
+}
+
+.sheet-rule__legend-item,
+.sheet-rule__term {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.sheet-rule__valences {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 24px;
+}
+
+.sheet-rule__valence {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  gap: 4px 14px;
+}
+
+.sheet-rule__term-label {
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 0.8125rem;
+}
+
+@page {
+  margin: 10mm;
+}
+
+@media print {
+  /* On paper the rule is a header, not a card: it keeps the formulas and gives
+     the five blocks under it the rest of the page. */
+  .sheet-rule {
+    padding: 0 !important;
+    border: 0 !important;
+    margin-bottom: 6px;
+    box-shadow: none !important;
+    gap: 3px;
+  }
+
+  .sheet-rule__title {
+    font-size: 12px;
+  }
+
+  .sheet-rule__lead,
+  .sheet-rule__note,
+  .sheet-rule__legend {
+    font-size: 9px;
+  }
+
+  .sheet-rule__display {
+    font-size: 11px;
+  }
+
+  .sheet-rule__term-label {
+    font-size: 10px;
+  }
+
+  .sheet-print-line {
+    display: block;
+    margin: 0 0 6px;
+    color: var(--text-muted);
+    font-size: 10px;
+  }
+
+  /*
+   * `ReferenceGrid` and the blocks inside it are drawn with inline styles,
+   * which only `!important` reaches. Left alone the sheet runs to three sides;
+   * three columns at this size put it on two, measured against an A4 page with
+   * 10 mm margins.
+   */
+  .reference-grid {
+    gap: 5px 12px !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+
+  .reference-section h4 {
+    font-size: 11px !important;
+  }
+
+  .reference-section p {
+    font-size: 10px !important;
+  }
+
+  .reference-section > span {
+    padding: 1px 0 !important;
+    gap: 5px !important;
+  }
+
+  .reference-section > span > span {
+    font-size: 10px !important;
+  }
+
+  /* A third of a 250 px column spent on the construct leaves the line beside
+     it wrapping three times; on paper the construct needs no more than this. */
+  .reference-section > span > span:first-child {
+    flex-basis: 86px !important;
+  }
+}

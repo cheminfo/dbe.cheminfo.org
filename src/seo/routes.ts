@@ -77,7 +77,7 @@ export const FIXED_ROUTES: readonly RouteMeta[] = [
     path: '/about',
     title: 'About — what this tool counts and what it borrows',
     description:
-      'What this tool counts from a formula and from a structure, where it stops, the libraries it borrows, how to cite it and where to report a problem.',
+      'What this degree-of-unsaturation tool counts from a formula and from a structure, where it stops, the libraries it borrows, and how to cite it.',
     short: 'About',
     note: 'what it counts, and what it borrows',
   },

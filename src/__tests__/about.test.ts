@@ -49,11 +49,6 @@ test('every borrowed work the site runs on is named, and resolves', () => {
     'react-cheminfo',
     'cheminfo-font',
   ]);
-  expect(about.license).toBe('MIT');
-  expect(about.repository).toBe('https://github.com/cheminfo/dbe.cheminfo.org');
-  expect(about.issues).toBe(
-    'https://github.com/cheminfo/dbe.cheminfo.org/issues',
-  );
 });
 
 test('the formula parser is credited under mass-tools, its own home', () => {

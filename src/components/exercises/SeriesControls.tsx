@@ -7,10 +7,11 @@
  * The seed is written where it can be read out to a room.
  */
 
-import { Button, Card, HTMLSelect, NumericInput } from '@blueprintjs/core';
+import { Button, Card, HTMLSelect } from '@blueprintjs/core';
 import { useSignals } from '@preact/signals-react/runtime';
 import { XSadd } from 'ml-xsadd';
 import type { ReactElement } from 'react';
+import { NumberInput } from 'react-cheminfo/ui';
 
 import type { SeriesDirection, SeriesLevel } from '../../share/params.ts';
 import { SERIES_DIRECTIONS, SERIES_LEVELS } from '../../share/params.ts';
@@ -62,15 +63,14 @@ export function SeriesControls(): ReactElement {
       <div className="series__row">
         <label className="series__field">
           <span className="series__label">Questions</span>
-          <NumericInput
+          <NumberInput
             value={count}
             min={COUNT_RANGE.minimum}
             max={COUNT_RANGE.maximum}
-            clampValueOnBlur
+            integer
             fill
-            onValueChange={(value) => {
-              setCount(value);
-            }}
+            ariaLabel="Questions in the series"
+            onChange={setCount}
           />
         </label>
 
@@ -110,15 +110,17 @@ export function SeriesControls(): ReactElement {
 
         <label className="series__field">
           <span className="series__label">Seed</span>
-          <NumericInput
-            value={seed ?? ''}
+          <NumberInput
+            allowEmpty
+            value={seed ?? undefined}
             min={SEED_RANGE.minimum}
             max={SEED_RANGE.maximum}
-            clampValueOnBlur
+            integer
             fill
             placeholder="none"
-            onValueChange={(value) => {
-              openSeries(value);
+            ariaLabel="Series seed"
+            onChange={(value) => {
+              if (value !== undefined) openSeries(value);
             }}
           />
         </label>

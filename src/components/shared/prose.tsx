@@ -28,8 +28,7 @@ export function renderMf(mf: string): ReactNode {
  *
  * The structure is drawn, never written: a SMILES is a notation for software,
  * and a reader who has just been told what a ring is cannot see one in
- * `C1CCCCC1`. The depiction sits on its own plate, because the definition opens
- * on a dark tooltip and a structure is drawn in dark ink.
+ * `C1CCCCC1`.
  * @param example - The entry's example, `code` the formula and `input` the
  * SMILES of the structure behind it.
  * @returns The line the definition shows above the note.

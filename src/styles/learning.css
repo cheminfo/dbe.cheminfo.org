@@ -551,9 +551,7 @@
 
 /* ── A glossary example ──────────────────────────────────────────────────── */
 
-/* The formula, then the structure it is read against. The definition opens on
-   a dark tooltip and a depiction is drawn in dark ink, so the drawing carries
-   the light plate with it and reads the same on the glossary page. */
+/* The formula, then the structure it is read against. */
 .glossary-example {
   display: flex;
   align-items: center;
@@ -562,7 +560,4 @@
 
 .glossary-example__drawing {
   display: inline-flex;
-  padding: 2px;
-  border-radius: 6px;
-  background: var(--surface);
 }

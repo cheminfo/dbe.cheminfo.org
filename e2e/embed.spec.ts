@@ -31,19 +31,19 @@ for (const query of ['?embed', '?embed=1']) {
     // of absence below.
     await expect(page.getByTestId('page-calculator')).toBeVisible();
     await expect(page.getByTestId('formula-input')).toBeVisible();
-    await expect(page.getByTestId('structure-input')).toBeVisible();
+    await expect(page.getByTestId('structure-panel')).toBeVisible();
 
     await expectNoChrome(page);
   });
 }
 
-test('?hide=breakdown drops the table and keeps the number', async ({
+test('?hide=breakdown drops the fraction and keeps the number', async ({
   page,
 }) => {
   await page.goto('/?embed=1&mf=C6H6&hide=breakdown');
 
   await expect(page.getByTestId('formula-dbe')).toHaveText('4');
-  await expect(page.getByTestId('formula-breakdown')).toHaveCount(0);
+  await expect(page.getByTestId('formula-fraction')).toHaveCount(0);
 });
 
 test('?hide=list leaves the question the link names, with no deck', async ({

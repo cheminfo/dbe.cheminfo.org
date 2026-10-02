@@ -13,7 +13,7 @@ import type { PoolEntry } from './types.ts';
 export const SULFUR_POOL: readonly PoolEntry[] = [
   {
     id: 'thiophene',
-    name: 'Thiophene',
+    name: 'thiophene',
     smiles: 'c1ccsc1',
     mf: 'C4H4S',
     dbe: 3,
@@ -25,7 +25,7 @@ export const SULFUR_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'diethyl-sulfide',
-    name: 'Diethyl sulfide',
+    name: 'diethyl sulfide',
     smiles: 'CCSCC',
     mf: 'C4H10S',
     dbe: 0,
@@ -37,7 +37,7 @@ export const SULFUR_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'methionine',
-    name: 'Methionine',
+    name: 'methionine',
     smiles: 'CSCCC(N)C(=O)O',
     mf: 'C5H11NO2S',
     dbe: 1,
@@ -49,7 +49,7 @@ export const SULFUR_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'thiourea',
-    name: 'Thiourea',
+    name: 'thiourea',
     smiles: 'NC(N)=S',
     mf: 'CH4N2S',
     dbe: 1,
@@ -61,7 +61,7 @@ export const SULFUR_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'dmso',
-    name: 'Dimethyl sulfoxide',
+    name: 'dimethyl sulfoxide',
     smiles: 'CS(=O)C',
     mf: 'C2H6OS',
     dbe: 1,
@@ -74,7 +74,7 @@ export const SULFUR_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'methyl-phenyl-sulfoxide',
-    name: 'Methyl phenyl sulfoxide',
+    name: 'methyl phenyl sulfoxide',
     smiles: 'CS(=O)c1ccccc1',
     mf: 'C7H8OS',
     dbe: 5,
@@ -87,7 +87,7 @@ export const SULFUR_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'dimethyl-sulfone',
-    name: 'Dimethyl sulfone',
+    name: 'dimethyl sulfone',
     smiles: 'CS(=O)(=O)C',
     mf: 'C2H6O2S',
     dbe: 2,
@@ -100,7 +100,7 @@ export const SULFUR_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'methanesulfonic-acid',
-    name: 'Methanesulfonic acid',
+    name: 'methanesulfonic acid',
     smiles: 'CS(=O)(=O)O',
     mf: 'CH4O3S',
     dbe: 2,
@@ -113,7 +113,7 @@ export const SULFUR_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'sulfolane',
-    name: 'Sulfolane',
+    name: 'sulfolane',
     smiles: 'C1CCS(=O)(=O)C1',
     mf: 'C4H8O2S',
     dbe: 3,
@@ -126,7 +126,7 @@ export const SULFUR_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'sulfanilamide',
-    name: 'Sulfanilamide',
+    name: 'sulfanilamide',
     smiles: 'Nc1ccc(cc1)S(N)(=O)=O',
     mf: 'C6H8N2O2S',
     dbe: 6,
@@ -139,7 +139,7 @@ export const SULFUR_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'saccharin',
-    name: 'Saccharin',
+    name: 'saccharin',
     smiles: 'O=C1NS(=O)(=O)c2ccccc21',
     mf: 'C7H5NO3S',
     dbe: 8,

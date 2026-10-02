@@ -15,7 +15,13 @@ import type {
   StructureExercise,
 } from '../../data/exercises/types.ts';
 import { MOLECULE_POOL } from '../../data/molecules.ts';
+import {
+  chosenAssumptions,
+  valenceAssumptions,
+  valenceLabel,
+} from '../assumptions.ts';
 import { dbeOfFormula } from '../formula.ts';
+import { formulaExerciseLevel } from '../level.ts';
 import {
   generateSeries,
   isSeriesExerciseId,
@@ -42,8 +48,8 @@ test('one seed gives one problem set, every time', () => {
     ['s4271-7', 'formula'],
     ['s4271-8', 'structure'],
   ]);
-  expect(first[0]?.title).toBe('Read the formula C4H6');
-  expect(first[1]?.title).toBe('Count the drawing of Phenol');
+  expect(first[0]?.title).toBe('Read the formula {{C4H6}}');
+  expect(first[1]?.title).toBe('Count the drawing of phenol');
 });
 
 test('another seed gives another problem set', () => {
@@ -121,6 +127,36 @@ test('the level is honoured, and mixed draws from all three', () => {
   ).toStrictEqual(['advanced', 'beginner', 'intermediate']);
 });
 
+test('a formula question is levelled by its elements', () => {
+  for (const level of ['beginner', 'intermediate', 'advanced'] as const) {
+    const series = generateSeries({
+      seed: 31,
+      count: 6,
+      level,
+      direction: 'formula',
+    });
+    expect([level, series.length]).toStrictEqual([level, 6]);
+    for (const question of series) {
+      const asked = question as FormulaExercise;
+      expect([asked.mf, asked.level]).toStrictEqual([
+        asked.mf,
+        formulaExerciseLevel(asked.mf),
+      ]);
+      expect(asked.level, asked.mf).toBe(level);
+    }
+  }
+
+  // Carbon, hydrogen and oxygen is a beginner's sum however involved the
+  // molecule behind it is; sulfur and phosphorus are where a valence has to be
+  // chosen, so they are the advanced half.
+  expect([
+    formulaExerciseLevel('C9H8O4'),
+    formulaExerciseLevel('C7H5F3'),
+    formulaExerciseLevel('C8H10N4O2'),
+    formulaExerciseLevel('C2H6OS'),
+  ]).toStrictEqual(['beginner', 'intermediate', 'intermediate', 'advanced']);
+});
+
 test('the direction is honoured, and both alternates', () => {
   const formulas = generateSeries({
     seed: 12,
@@ -164,24 +200,46 @@ test('a formula question is never asked where the formula cannot answer it', () 
   });
   for (const question of series) {
     const asked = question as FormulaExercise;
-    expect([asked.mf, dbeOfFormula(asked.mf)]).toStrictEqual([
+    expect([
       asked.mf,
-      asked.expected.dbe,
-    ]);
+      dbeOfFormula(asked.mf, { valences: asked.valences }),
+    ]).toStrictEqual([asked.mf, asked.expected.dbe]);
+  }
+});
+
+test('a formula question says which valence it is counted at', () => {
+  const series = generateSeries({
+    seed: 77,
+    count: 30,
+    level: 'advanced',
+    direction: 'formula',
+  });
+
+  // The advanced half is sulfur and phosphorus, which is the half a formula
+  // cannot be read without an assumption, so every one of them states it.
+  const expanded = series.filter(
+    (question) => question.valences !== undefined,
+  ) as readonly FormulaExercise[];
+  expect(expanded.length).toBeGreaterThan(0);
+  for (const question of expanded) {
+    const assumed = chosenAssumptions(
+      valenceAssumptions(question.mf, question.valences),
+    );
+    expect(assumed.length, question.mf).toBeGreaterThan(0);
+    for (const one of assumed) {
+      const label = valenceLabel(one);
+      expect(question.title, question.mf).toContain(label);
+      expect(question.description, question.mf).toContain(label);
+      expect(question.hints.join(' '), question.mf).toContain(label);
+    }
   }
 
-  // Seed 99 asks its third question about a molecule the table cannot reach, so
-  // it is asked as a drawing although `both` would have asked for a formula.
-  const alternating = generateSeries({
-    seed: 99,
-    count: 3,
-    level: 'mixed',
-    direction: 'both',
-  });
-  expect(alternating.map((question) => question.kind)).toStrictEqual([
-    'formula',
-    'structure',
-    'structure',
+  // Dimethyl sulfone is the case: C2H6O2S reads 0 at the standard table and 2
+  // at S(VI), and the question that asks for 2 is the one that says S(VI).
+  const sulfone = series.find((question) => question.mf === 'C2H6O2S');
+  expect([sulfone?.title, sulfone?.expected.dbe]).toStrictEqual([
+    'Read the formula {{C2H6O2S}} at S(VI)',
+    2,
   ]);
 });
 
@@ -203,7 +261,7 @@ test('a question carries everything its card draws', () => {
     asked.hints.length,
   ]).toStrictEqual(['formula', 'C4H6', { dbe: 2 }, 'C=CC=C', 2]);
   expect(asked.solution).toBe(
-    'C4H6 counts 2, and the drawing behind it is Buta-1,3-diene.',
+    '{{C4H6}} counts 2, and the drawing behind it is buta-1,3-diene.',
   );
   expect([
     drawn.kind,
@@ -211,8 +269,8 @@ test('a question carries everything its card draws', () => {
     drawn.mf,
     drawn.expected,
     drawn.smiles,
-  ]).toStrictEqual(['structure', 'Phenol', 'C6H6O', { dbe: 4 }, 'Oc1ccccc1']);
-  expect(drawn.solution).toBe('Phenol counts 4.');
+  ]).toStrictEqual(['structure', 'phenol', 'C6H6O', { dbe: 4 }, 'Oc1ccccc1']);
+  expect(drawn.solution).toBe('The drawing of phenol counts 4.');
 });
 
 test('a series id round-trips through the address it is read from', () => {

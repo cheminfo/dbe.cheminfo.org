@@ -51,9 +51,10 @@ test('every part describes itself for the dialog, and only the bar is chrome', (
 
   expect(inHeader).toStrictEqual(['tabs']);
   // What a course page has no use for is already off when the dialog opens: the
-  // heading it repeats, the worked examples, and the controls that would let a
-  // class reroll the problem set it was given.
+  // heading it repeats, the worked examples, the controls that would let a
+  // class reroll the problem set it was given, and the two that hand out the
+  // answer to a question a teacher is setting.
   expect(
     SHARE_PART_IDS.filter((id) => SHARE_PARTS[id].hiddenByDefault === true),
-  ).toStrictEqual(['intro', 'examples', 'series']);
+  ).toStrictEqual(['intro', 'examples', 'series', 'hints', 'solution']);
 });

@@ -1,14 +1,14 @@
 /**
  * The rule itself, at the top of the printed sheet.
  *
- * The five blocks under it are what each element is worth; this is the
- * identity they are worth it *in*, written twice — once with every valence
- * left as a letter, once with the ones nobody chooses substituted. Sulfur and
- * phosphorus stay as `v` on purpose: that they have no single value is the
- * whole subject of the site, so the sheet states it as part of the rule rather
- * than as a footnote two blocks down.
+ * It is written twice: once compactly, as the sum a chemist states it as, and
+ * once as one fraction with every possibility in it. The second is the one a
+ * student copies out — every element the rule knows, including the ones worth
+ * nothing, and each valence sulfur and phosphorus can be counted at, so the
+ * reader can see that oxygen contributes 0 rather than guessing it was
+ * forgotten.
  *
- * Nothing here is typed: `src/dbe/rule.ts` builds both formulas from the
+ * Nothing here is typed: `src/dbe/rule.ts` builds both formulas out of the
  * valence table, and a unit test recomputes every coefficient.
  */
 
@@ -17,15 +17,13 @@ import type { ReactElement } from 'react';
 
 import {
   GENERAL_RULE_TEX,
-  OPEN_VALENCE_SYMBOLS,
   RULE_LEGEND,
   WRITTEN_RULE_TEX,
-  valenceTerms,
 } from '../../dbe/index.ts';
 import { TeX } from '../shared/TeX.tsx';
 
 /**
- * The rule, its legend, and what each open valence is worth.
+ * The rule and its legend.
  * @returns The block that opens the sheet.
  */
 export function RuleCard(): ReactElement {
@@ -33,9 +31,13 @@ export function RuleCard(): ReactElement {
     <Card compact className="sheet-rule" data-testid="rule-card">
       <h2 className="sheet-rule__title">The rule</h2>
       <p className="sheet-rule__lead">
-        <span>Every atom is worth </span>
-        <TeX math={String.raw`\tfrac{v - 2}{2}`} />
-        <span>. Only sulfur and phosphorus leave you a valence to choose.</span>
+        <span>Every atom adds </span>
+        <TeX math={'v - 2'} />
+        <span>
+          {
+            ' above the bar, so the halving happens once, at the end. Only sulfur and phosphorus leave you a valence to choose.'
+          }
+        </span>
       </p>
 
       <TeX className="sheet-rule__display" math={GENERAL_RULE_TEX} />
@@ -50,22 +52,10 @@ export function RuleCard(): ReactElement {
         ))}
       </ul>
 
-      <div className="sheet-rule__valences">
-        {OPEN_VALENCE_SYMBOLS.map((symbol) => (
-          <p key={symbol} className="sheet-rule__valence">
-            {valenceTerms(symbol).map((term) => (
-              <span key={term.label} className="sheet-rule__term">
-                <span className="sheet-rule__term-label">{term.label}</span>
-                <TeX math={term.tex} />
-              </span>
-            ))}
-          </p>
-        ))}
-      </div>
-
       <p className="sheet-rule__note">
-        Oxygen is divalent, so it is worth 0 and never appears. Selenium follows
-        sulfur, arsenic phosphorus.
+        Each sulfur is counted once, in whichever of the three terms you put it.
+        Oxygen is divalent, so its coefficient is 0 and counting it changes
+        nothing. Selenium follows sulfur, arsenic phosphorus.
       </p>
     </Card>
   );

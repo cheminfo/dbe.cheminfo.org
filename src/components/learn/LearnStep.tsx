@@ -94,7 +94,9 @@ export function LearnStep(props: LearnStepProps): ReactElement {
           <PagePart part="structure">
             <div className="learn-readout__card learn-readout__card--drawing">
               <span className="learn-readout__label">From the drawing</span>
-              <Structure smiles={section.smiles} width={190} height={130} />
+              <span className="learn-readout__subject">
+                <Structure smiles={section.smiles} width={190} height={130} />
+              </span>
               <span
                 className="learn-readout__number"
                 data-testid="structure-dbe"

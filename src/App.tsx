@@ -20,6 +20,7 @@ import { startDocumentMeta } from 'react-cheminfo/core';
 import {
   CiteButton,
   EcosystemButton,
+  GlossaryProvider,
   HiddenPartsProvider,
   NavLink,
   SiteFooter,
@@ -28,6 +29,8 @@ import {
 } from 'react-cheminfo/ui';
 
 import { ABOUT } from './about.ts';
+import { renderGlossaryExample, renderMf } from './components/shared/prose.tsx';
+import { GLOSSARY } from './data/glossary.ts';
 import { About } from './pages/About.tsx';
 import { Calculator } from './pages/Calculator.tsx';
 import { Exercises } from './pages/Exercises.tsx';
@@ -124,7 +127,16 @@ export function App(): ReactElement {
         */}
         <main className="app-main" data-testid={`page-${activeTab}`}>
           <HiddenPartsProvider hidden={hidden}>
-            <PageBody tab={activeTab} />
+            {/* One glossary for the whole tool, and one way of drawing a
+                formula: every page writes `{{C6H12O6}}` and none of them
+                decides what that looks like. */}
+            <GlossaryProvider
+              glossary={GLOSSARY}
+              renderMf={renderMf}
+              renderExample={renderGlossaryExample}
+            >
+              <PageBody tab={activeTab} />
+            </GlossaryProvider>
           </HiddenPartsProvider>
         </main>
       </div>

@@ -13,7 +13,7 @@ import type { PoolEntry } from './types.ts';
 export const NITROGEN_POOL: readonly PoolEntry[] = [
   {
     id: 'acetonitrile',
-    name: 'Acetonitrile',
+    name: 'acetonitrile',
     smiles: 'CC#N',
     mf: 'C2H3N',
     dbe: 2,
@@ -25,7 +25,7 @@ export const NITROGEN_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'aniline',
-    name: 'Aniline',
+    name: 'aniline',
     smiles: 'Nc1ccccc1',
     mf: 'C6H7N',
     dbe: 4,
@@ -37,7 +37,7 @@ export const NITROGEN_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'pyridine',
-    name: 'Pyridine',
+    name: 'pyridine',
     smiles: 'c1ccncc1',
     mf: 'C5H5N',
     dbe: 4,
@@ -49,7 +49,7 @@ export const NITROGEN_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'pyrrole',
-    name: 'Pyrrole',
+    name: 'pyrrole',
     smiles: 'c1cc[nH]c1',
     mf: 'C4H5N',
     dbe: 3,
@@ -61,7 +61,7 @@ export const NITROGEN_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'benzonitrile',
-    name: 'Benzonitrile',
+    name: 'benzonitrile',
     smiles: 'N#Cc1ccccc1',
     mf: 'C7H5N',
     dbe: 6,
@@ -73,7 +73,7 @@ export const NITROGEN_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'caffeine',
-    name: 'Caffeine',
+    name: 'caffeine',
     smiles: 'Cn1cnc2c1c(=O)n(C)c(=O)n2C',
     mf: 'C8H10N4O2',
     dbe: 6,
@@ -85,7 +85,7 @@ export const NITROGEN_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'nitrobenzene',
-    name: 'Nitrobenzene',
+    name: 'nitrobenzene',
     smiles: '[O-][N+](=O)c1ccccc1',
     mf: 'C6H5NO2',
     dbe: 5,

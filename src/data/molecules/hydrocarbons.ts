@@ -13,7 +13,7 @@ import type { PoolEntry } from './types.ts';
 export const HYDROCARBON_POOL: readonly PoolEntry[] = [
   {
     id: 'hexane',
-    name: 'Hexane',
+    name: 'hexane',
     smiles: 'CCCCCC',
     mf: 'C6H14',
     dbe: 0,
@@ -25,7 +25,7 @@ export const HYDROCARBON_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'ethene',
-    name: 'Ethene',
+    name: 'ethene',
     smiles: 'C=C',
     mf: 'C2H4',
     dbe: 1,
@@ -37,7 +37,7 @@ export const HYDROCARBON_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'ethyne',
-    name: 'Ethyne',
+    name: 'ethyne',
     smiles: 'C#C',
     mf: 'C2H2',
     dbe: 2,
@@ -49,7 +49,7 @@ export const HYDROCARBON_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'butadiene',
-    name: 'Buta-1,3-diene',
+    name: 'buta-1,3-diene',
     smiles: 'C=CC=C',
     mf: 'C4H6',
     dbe: 2,
@@ -61,7 +61,7 @@ export const HYDROCARBON_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'cyclopentane',
-    name: 'Cyclopentane',
+    name: 'cyclopentane',
     smiles: 'C1CCCC1',
     mf: 'C5H10',
     dbe: 1,
@@ -73,7 +73,7 @@ export const HYDROCARBON_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'cyclohexane',
-    name: 'Cyclohexane',
+    name: 'cyclohexane',
     smiles: 'C1CCCCC1',
     mf: 'C6H12',
     dbe: 1,
@@ -85,7 +85,7 @@ export const HYDROCARBON_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'cyclohexene',
-    name: 'Cyclohexene',
+    name: 'cyclohexene',
     smiles: 'C1=CCCCC1',
     mf: 'C6H10',
     dbe: 2,
@@ -97,7 +97,7 @@ export const HYDROCARBON_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'chloroform',
-    name: 'Chloroform',
+    name: 'chloroform',
     smiles: 'ClC(Cl)Cl',
     mf: 'CHCl3',
     dbe: 0,
@@ -109,7 +109,7 @@ export const HYDROCARBON_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'benzene',
-    name: 'Benzene',
+    name: 'benzene',
     smiles: 'c1ccccc1',
     mf: 'C6H6',
     dbe: 4,
@@ -121,7 +121,7 @@ export const HYDROCARBON_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'benzotrifluoride',
-    name: 'Benzotrifluoride',
+    name: 'benzotrifluoride',
     smiles: 'FC(F)(F)c1ccccc1',
     mf: 'C7H5F3',
     dbe: 4,
@@ -129,11 +129,11 @@ export const HYDROCARBON_POOL: readonly PoolEntry[] = [
     piBonds: 3,
     level: 'intermediate',
     tags: ['ring', 'aromatic', 'halogen'],
-    note: 'Reads exactly as toluene C7H8 does.',
+    note: 'Reads exactly as toluene {{C7H8}} does.',
   },
   {
     id: 'styrene',
-    name: 'Styrene',
+    name: 'styrene',
     smiles: 'C=Cc1ccccc1',
     mf: 'C8H8',
     dbe: 5,
@@ -145,7 +145,7 @@ export const HYDROCARBON_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'naphthalene',
-    name: 'Naphthalene',
+    name: 'naphthalene',
     smiles: 'c1ccc2ccccc2c1',
     mf: 'C10H8',
     dbe: 7,
@@ -157,7 +157,7 @@ export const HYDROCARBON_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'anthracene',
-    name: 'Anthracene',
+    name: 'anthracene',
     smiles: 'c1ccc2cc3ccccc3cc2c1',
     mf: 'C14H10',
     dbe: 10,
@@ -169,7 +169,7 @@ export const HYDROCARBON_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'adamantane',
-    name: 'Adamantane',
+    name: 'adamantane',
     smiles: 'C1C2CC3CC1CC(C2)C3',
     mf: 'C10H16',
     dbe: 3,
@@ -181,7 +181,7 @@ export const HYDROCARBON_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'cubane',
-    name: 'Cubane',
+    name: 'cubane',
     smiles: 'C12C3C4C1C1C4C3C21',
     mf: 'C8H8',
     dbe: 5,

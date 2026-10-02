@@ -35,8 +35,9 @@ const BY_ID = new Map(MOLECULE_POOL.map((entry) => [entry.id, entry]));
  * The examples the calculator offers in a row under its inputs.
  *
  * They are an argument rather than a sample: a ring, a fused pair, a cage and
- * a molecule whose formula and drawing agree, then three where they do not.
- * Clicking through them left to right is the site in eight clicks.
+ * a molecule whose formula and drawing agree, a nitro group that still agrees
+ * because nitrogen cannot expand its octet, then three where they do not.
+ * Clicking through them left to right is the site in nine clicks.
  */
 export const CALCULATOR_EXAMPLES: readonly PoolEntry[] = [
   'benzene',
@@ -44,6 +45,7 @@ export const CALCULATOR_EXAMPLES: readonly PoolEntry[] = [
   'cubane',
   'aspirin',
   'caffeine',
+  'nitrobenzene',
   'dmso',
   'dimethyl-sulfone',
   'triphenylphosphine-oxide',

@@ -15,7 +15,7 @@
 
 import { expect, test } from 'vitest';
 
-import { validateDbeAnswer } from '../../dbe/index.ts';
+import { formulaExerciseLevel, validateDbeAnswer } from '../../dbe/index.ts';
 import type { DbeExercise } from '../exercises/types.ts';
 import {
   EXERCISES,
@@ -61,12 +61,20 @@ test('the deck is 20 questions, ten each way, with unique linkable ids', () => {
   expect(new Set(EXERCISE_IDS).size).toBe(20);
   expect(exercisesOfKind('formula')).toHaveLength(10);
   expect(exercisesOfKind('structure')).toHaveLength(10);
-  expect(exercisesOfLevel('beginner')).toHaveLength(6);
-  expect(exercisesOfLevel('intermediate')).toHaveLength(6);
+  expect(exercisesOfLevel('beginner')).toHaveLength(7);
+  expect(exercisesOfLevel('intermediate')).toHaveLength(5);
   expect(exercisesOfLevel('advanced')).toHaveLength(8);
   for (const exercise of EXERCISES) {
     expect(exercise.id).toMatch(URL_SAFE);
     expect(['formula', 'structure'], exercise.id).toContain(exercise.kind);
+  }
+});
+
+test('a formula question is levelled by its elements, not by its molecule', () => {
+  for (const exercise of exercisesOfKind('formula')) {
+    expect(exercise.level, exercise.id).toBe(
+      formulaExerciseLevel((exercise as { mf: string }).mf),
+    );
   }
 });
 

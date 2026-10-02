@@ -2,11 +2,11 @@
  * One question: what it asks, what it shows, what is written, and what the
  * marking says.
  *
- * The answer is marked on every keystroke and *Check* commits the attempt, so
- * the case list is live while the status stays deliberate. Nothing is
- * withheld: the hints open one at a time and the solution is always one click
- * away, because getting stuck and reading the answer is part of how the
- * intuition is built.
+ * Nothing is marked until *Check* is pressed, and editing a box takes the
+ * marking away again: a question answers itself if the green callout arrives
+ * as the last digit is typed. Nothing is withheld either — the hints open one
+ * at a time and the solution is always one click away, because getting stuck
+ * and reading the answer is part of how the intuition is built.
  */
 
 import { Button, Callout, Card, Tag } from '@blueprintjs/core';
@@ -19,6 +19,7 @@ import {
   ExerciseLevelTag,
   GlossaryText,
   HintLadder,
+  InlineText,
   PagePart,
   useIsHidden,
 } from 'react-cheminfo/ui';
@@ -26,7 +27,11 @@ import { MF } from 'react-mf';
 
 import type { DbeExercise } from '../../data/exercises.ts';
 import type { DbeAnswer } from '../../dbe/index.ts';
-import { validateDbeAnswer } from '../../dbe/index.ts';
+import {
+  assumptionText,
+  valenceAssumptions,
+  validateDbeAnswer,
+} from '../../dbe/index.ts';
 import {
   getExerciseProgress,
   resetExercise,
@@ -59,22 +64,35 @@ export function ExerciseCard(props: ExerciseCardProps): ReactElement {
     parseAnswer(progress.answer),
   );
   const [showStructure, setShowStructure] = useState(false);
+  // The answer as it was handed in, which is the only one the marking reads. A
+  // question reopened after a check is marked again from what was stored.
+  const [checked, setChecked] = useState<DbeAnswer | null>(() =>
+    progress.status === 'idle' ? null : parseAnswer(progress.answer),
+  );
   const result = useMemo(
-    () => validateDbeAnswer(exercise.kind, exercise.expected, answer),
-    [exercise, answer],
+    () =>
+      validateDbeAnswer(
+        exercise.kind,
+        exercise.expected,
+        checked ?? parseAnswer(''),
+      ),
+    [exercise, checked],
   );
   const blank = answer.dbe.trim() === '';
   const attempted = progress.status !== 'idle';
 
   const write = (next: DbeAnswer): void => {
     setAnswer(next);
+    setChecked(null);
     setExerciseAnswer(exercise.id, formatAnswer(next));
   };
 
   return (
     <Card className="exercise-card" data-testid="exercise-card">
       <div className="exercise-card__heading">
-        <h1>{exercise.title}</h1>
+        <h1>
+          <InlineText text={exercise.title} />
+        </h1>
         <ExerciseLevelTag level={exercise.level} />
         <Tag minimal round>
           {exercise.kind === 'formula' ? 'Formula' : 'Structure'}
@@ -101,9 +119,15 @@ export function ExerciseCard(props: ExerciseCardProps): ReactElement {
           text="Check"
           disabled={blank}
           onClick={() => {
+            const verdict = validateDbeAnswer(
+              exercise.kind,
+              exercise.expected,
+              answer,
+            );
+            setChecked(answer);
             setExerciseStatus(
               exercise.id,
-              result.passed ? 'solved' : 'attempted',
+              verdict.passed ? 'solved' : 'attempted',
             );
           }}
         />
@@ -128,6 +152,7 @@ export function ExerciseCard(props: ExerciseCardProps): ReactElement {
           onReset={() => {
             resetExercise(exercise.id);
             setAnswer(parseAnswer(''));
+            setChecked(null);
             setShowStructure(false);
           }}
         >
@@ -145,8 +170,7 @@ export function ExerciseCard(props: ExerciseCardProps): ReactElement {
 
       <ExerciseVerdict
         result={result}
-        attempted={attempted}
-        blank={blank}
+        checked={checked !== null}
         solution={exercise.solution}
       />
 
@@ -184,11 +208,17 @@ function Figure(props: {
       </div>
     );
   }
+  const assumed = valenceAssumptions(exercise.mf, exercise.valences);
   return (
     <div className="exercise-card__figure">
       <span className="exercise-card__mf">
         <MF mf={exercise.mf} />
       </span>
+      {assumed.length > 0 && (
+        <span className="exercise-card__assumption">
+          {`Counting ${assumptionText(assumed)}.`}
+        </span>
+      )}
       {showStructure && exercise.smiles !== undefined && (
         <Structure smiles={exercise.smiles} width={240} height={170} />
       )}

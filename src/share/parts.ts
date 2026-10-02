@@ -60,8 +60,8 @@ export const SHARE_PARTS: Record<SharePartId, HideablePart> = {
   },
   breakdown: {
     key: 'breakdown',
-    label: 'Element breakdown',
-    description: 'What each element contributes, leaving the number alone.',
+    label: 'The working',
+    description: 'The fraction under the number, leaving the number alone.',
   },
   valences: {
     key: 'valences',
@@ -119,11 +119,13 @@ export const SHARE_PARTS: Record<SharePartId, HideablePart> = {
     key: 'hints',
     label: 'Hints',
     description: 'The hint ladder under a question.',
+    hiddenByDefault: true,
   },
   solution: {
     key: 'solution',
     label: 'Solution',
     description: 'The button revealing the answer.',
+    hiddenByDefault: true,
   },
 };
 

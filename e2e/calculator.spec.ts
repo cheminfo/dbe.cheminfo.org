@@ -21,24 +21,48 @@ const SULFOXIDE = 'CS(C)=O';
 /** What openchemlib-utils reads off that drawing, in cheminfo notation. */
 const SULFOXIDE_MF = 'C2H6OS';
 
-test('the formula box is read element by element, one row each', async ({
+test('the formula is read as one fraction, a term per element', async ({
   page,
 }) => {
   await page.goto('/');
   const formula = page.getByTestId('formula-input');
-  // The row headings of the table's body: one element each, in the order the
-  // formula writes them.
-  const elements = page.getByTestId('formula-breakdown').locator('tbody th');
+  const fraction = page.getByTestId('formula-fraction');
+  // What each term above the bar is counting, in the order the formula writes
+  // its elements.
+  const terms = fraction.locator('.calc-fraction__label--term');
 
   await formula.fill('C6H6');
   await expect(page.getByTestId('formula-dbe')).toHaveText('4');
-  await expect(elements).toHaveText(['C', 'H']);
+  await expect(terms).toHaveText(['C', 'H']);
+  // The rule is written out with this formula's numbers in it, so the
+  // arithmetic is there to be checked rather than trusted.
+  await expect(fraction).toContainText('2×6');
+  await expect(fraction).toContainText('1×6');
 
   // Aspirin brings the element that contributes nothing, and it still gets a
-  // line of its own: a student has to see the zero to believe it.
+  // term of its own: a student has to see the zero to believe it.
   await formula.fill('C9H8O4');
   await expect(page.getByTestId('formula-dbe')).toHaveText('6');
-  await expect(elements).toHaveText(['C', 'H', 'O']);
+  await expect(terms).toHaveText(['C', 'H', 'O']);
+});
+
+test('a sulfur formula shows every valence, the one in force counted', async ({
+  page,
+}) => {
+  // The fork the whole site is about: the fraction carries all three sulfur
+  // terms, so the reader can see the branch rather than only its result.
+  await page.goto('/?mf=C2H6O2S&valence=S6');
+  const terms = page
+    .getByTestId('formula-fraction')
+    .locator('.calc-fraction__label--term');
+
+  await expect(terms).toHaveText(['C', 'H', 'O', 'S(VI)', 'S(IV)', 'S(II)']);
+  await expect(page.getByTestId('formula-dbe')).toHaveText('2');
+
+  // Only the valence in force is counted; the other two are struck out.
+  const unused = page.locator('.calc-fraction__term--unused');
+  await expect(unused).toHaveCount(2);
+  await expect(page.locator('.calc-fraction__term--chosen')).toHaveCount(1);
 });
 
 test('a sulfoxide is where the formula and the drawing part company', async ({
@@ -103,17 +127,15 @@ test('a link carrying a formula and a valence opens on that reading', async ({
 });
 
 /**
- * Put a structure on the canvas by writing it down rather than drawing it.
+ * Put a structure on the canvas the way a shared link does.
  *
- * The box commits on Enter, not on every keystroke: a half-typed SMILES must
- * never reseed the canvas under somebody's pen.
+ * The canvas has no box beside it: a structure is drawn, pasted onto it, or
+ * carried by the address — and the address is the one a test can state.
  * @param page - The page under test.
  * @param notation - The structure, as SMILES.
  */
 async function drawFromNotation(page: Page, notation: string): Promise<void> {
-  const box = page.getByTestId('structure-input');
-  await box.fill(notation);
-  await box.press('Enter');
+  await page.goto(`/?smiles=${encodeURIComponent(notation)}`);
 }
 
 /**

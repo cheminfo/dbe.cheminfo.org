@@ -10,7 +10,7 @@ test('a link that says nothing leaves every setting at its default', () => {
     // No seed at all, rather than seed zero: zero is a seed somebody may pin,
     // so the curated deck has to be a different thing from any number.
     seed: null,
-    count: 8,
+    count: 20,
     level: 'mixed',
     direction: 'both',
   });
@@ -29,7 +29,7 @@ test('a number that is not one falls back rather than throwing', () => {
   const params = readShareParams({ seed: 'today', count: '' });
 
   expect(params.seed).toBe(null);
-  expect(params.count).toBe(8);
+  expect(params.count).toBe(20);
 });
 
 test('a text setting is cut rather than handed on whole', () => {

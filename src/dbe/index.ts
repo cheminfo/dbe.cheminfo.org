@@ -33,7 +33,16 @@ export type {
   ValenceOption,
 } from './types.ts';
 
+export type { ValenceAssumption } from './assumptions.ts';
+export {
+  assumptionText,
+  chosenAssumptions,
+  valenceAssumptions,
+  valenceLabel,
+} from './assumptions.ts';
 export { compareDbe, reconcilingValences } from './compare.ts';
+export type { FormulaFraction, FractionTerm } from './fraction.ts';
+export { formulaFraction } from './fraction.ts';
 export {
   formatDbe,
   formatHalf,
@@ -45,15 +54,19 @@ export {
 } from './format.ts';
 export type { FormulaDbeOptions } from './formula.ts';
 export { dbeFromFormula, dbeOfFormula } from './formula.ts';
-export type { RuleGroup, RuleSymbol, ValenceTerm } from './rule.ts';
+export { formulaExerciseLevel } from './level.ts';
+export type { NumeratorTerm, RuleGroup, RuleSymbol } from './rule.ts';
 export {
   GENERAL_RULE_TEX,
+  NUMERATOR_TERMS,
   OPEN_VALENCE_SYMBOLS,
   RULE_GROUPS,
   RULE_LEGEND,
   WRITTEN_RULE_TEX,
-  contributionTex,
-  valenceTerms,
+  countTex,
+  highestFirst,
+  numeratorCoefficient,
+  termTex,
 } from './rule.ts';
 export type { SeriesDirection, SeriesLevel, SeriesOptions } from './series.ts';
 export {

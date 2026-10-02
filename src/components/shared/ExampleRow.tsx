@@ -9,6 +9,7 @@
 
 import { Tooltip } from '@blueprintjs/core';
 import type { ReactElement } from 'react';
+import { InlineText } from 'react-cheminfo/ui';
 import { MF } from 'react-mf';
 
 import type { PoolEntry } from '../../data/molecules.ts';
@@ -36,7 +37,7 @@ export function ExampleRow(props: ExampleRowProps): ReactElement {
         <Tooltip
           compact
           key={entry.id}
-          content={entry.note}
+          content={<InlineText text={entry.note} />}
           hoverOpenDelay={150}
         >
           <button

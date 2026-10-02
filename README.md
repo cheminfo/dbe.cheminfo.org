@@ -29,18 +29,18 @@ nobody could link into.
 
 ### What a link can carry
 
-| Parameter   | Page          | Meaning                                                                      |
-| ----------- | ------------- | ---------------------------------------------------------------------------- |
-| `mf`        | `/`, `/learn` | the formula to load — `?mf=C2H6OS`                                           |
-| `smiles`    | `/`, `/learn` | the structure to load — `?smiles=CS(C)%3DO`                                  |
-| `valence`   | `/`, `/learn` | the valences in force — `?valence=S6,P5`, or `table` / `expanded`            |
-| `flags`     | `/`, `/learn` | which layers are drawn; `?flags=none` turns them all off                     |
-| `seed`      | `/exercises`  | the seed a generated series is drawn from, so one link gives one problem set |
-| `count`     | `/exercises`  | how many questions the series holds, clamped                                 |
-| `level`     | `/exercises`  | `beginner`, `intermediate`, `advanced` or `mixed`                            |
-| `direction` | `/exercises`  | `formula`, `structure` or `both`                                             |
-| `embed`     | every page    | drop the header, the page bar and the footer — `?embed` or `?embed=1`        |
-| `hide`      | every page    | comma-separated parts to leave out — `?hide=list,series`                     |
+| Parameter   | Page          | Meaning                                                                                           |
+| ----------- | ------------- | ------------------------------------------------------------------------------------------------- |
+| `mf`        | `/`, `/learn` | the formula to load — `?mf=C2H6OS`                                                                |
+| `smiles`    | `/`, `/learn` | the structure to load — `?smiles=CS(C)%3DO`                                                       |
+| `valence`   | `/`, `/learn` | the valences in force — `?valence=S6,P5`, or `table` / `expanded`                                 |
+| `flags`     | `/`, `/learn` | which layers are drawn; `?flags=none` turns them all off                                          |
+| `seed`      | `/exercises`  | the seed a generated series is drawn from, so one link gives one problem set                      |
+| `count`     | `/exercises`  | how many questions the series holds, clamped; 20 by default                                       |
+| `level`     | `/exercises`  | `beginner`, `intermediate`, `advanced` or `mixed`; a formula question is levelled by its elements |
+| `direction` | `/exercises`  | `formula`, `structure` or `both`                                                                  |
+| `embed`     | every page    | drop the header, the page bar and the footer — `?embed` or `?embed=1`                             |
+| `hide`      | every page    | comma-separated parts to leave out — `?hide=list,series`                                          |
 
 `hide` names a part positively: `intro`, `tabs`, `formula`, `breakdown`,
 `valences`, `editor`, `structure`, `compare`, `examples`, `steps`, `text`,

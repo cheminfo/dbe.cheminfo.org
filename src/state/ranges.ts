@@ -17,10 +17,15 @@ export interface NumberRange {
 }
 
 /**
- * How many questions a generated series holds. Thirty is a long lab session;
- * the ceiling is what stops a hand-edited link asking for a thousand.
+ * How many questions a generated series holds. Twenty is a problem sheet, which
+ * is what a series is handed out as; thirty is a long lab session, and the
+ * ceiling is what stops a hand-edited link asking for a thousand.
  */
-export const COUNT_RANGE: NumberRange = { minimum: 1, maximum: 30, initial: 8 };
+export const COUNT_RANGE: NumberRange = {
+  minimum: 1,
+  maximum: 30,
+  initial: 20,
+};
 
 /**
  * The seeds a link may pin. Six digits is a number a teacher can read out to a

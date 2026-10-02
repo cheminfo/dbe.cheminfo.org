@@ -5,9 +5,9 @@
  * Both directions are first class. A formula has to *assume* how many bonds
  * each of its atoms makes; a drawing states them. So the two halves are
  * independent inputs and neither derives the other — except that a drawing
- * produces a formula, which fills the box while nobody has typed in it. That is
- * what lets a student draw dimethyl sulfoxide and watch the formula half answer
- * 0 against the drawing's 1 without typing anything twice.
+ * produces a formula, which it writes into the box as it is drawn. That is what
+ * lets a student draw dimethyl sulfoxide and watch the formula half answer 0
+ * against the drawing's 1 without typing anything.
  */
 
 import { effect } from '@preact/signals-react';
@@ -19,7 +19,7 @@ import { PagePart } from 'react-cheminfo/ui';
 
 import { AgreementCallout } from '../components/compare/AgreementCallout.tsx';
 import { DbeReadout } from '../components/formula/DbeReadout.tsx';
-import { FormulaBreakdown } from '../components/formula/FormulaBreakdown.tsx';
+import { FormulaFraction } from '../components/formula/FormulaFraction.tsx';
 import { FormulaInput } from '../components/formula/FormulaInput.tsx';
 import { ValencePicker } from '../components/formula/ValencePicker.tsx';
 import { ExampleRow } from '../components/shared/ExampleRow.tsx';
@@ -129,7 +129,7 @@ export function Calculator(): ReactElement {
           />
 
           <PagePart part="breakdown">
-            {reading.ok && <FormulaBreakdown value={reading.value} />}
+            {reading.ok && <FormulaFraction value={reading.value} />}
           </PagePart>
         </section>
 
@@ -139,7 +139,6 @@ export function Calculator(): ReactElement {
               smiles={structureText}
               revision={revision}
               onDraw={handleDraw}
-              onLoad={loadStructure}
             />
           </PagePart>
 
@@ -178,12 +177,12 @@ export function Calculator(): ReactElement {
 }
 
 /**
- * Record a burst of strokes: the structure, and the notations the copy button
- * and the download hand out.
+ * Record a burst of strokes: the structure, the formula it reads as, and the
+ * notations the copy button and the download hand out.
  * @param change - The canvas, read out at the moment it stopped moving.
  */
 function handleDraw(change: StructureEditorChange): void {
-  setStructure(change.smiles);
+  setStructure(change.smiles, readDrawing(change.smiles)?.mf ?? '');
   setEditorValue(change.idCode, change.molfile);
 }
 
@@ -214,13 +213,13 @@ function readDrawing(text: string): StructureDbe | null {
 }
 
 /**
- * Fill the formula box from the drawing while nobody has typed in it.
+ * Fill the formula box from a structure the page was given rather than drawn.
  *
  * A shared link carries only `?smiles`, and reading the formula off it needs
  * the structure toolkit that `src/share` deliberately cannot import — so this
- * is where the box catches up with the canvas. It stops the moment a formula is
- * typed, because overwriting it would erase the very input the comparison is
- * about.
+ * is where the box catches up with the canvas. A stroke needs none of it: it
+ * writes the formula itself, through {@link handleDraw}. A link that also
+ * carries `?mf` pins that formula, and this leaves it alone.
  */
 function useFormulaFollowsDrawing(): void {
   useEffect(

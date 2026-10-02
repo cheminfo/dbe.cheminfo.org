@@ -157,7 +157,7 @@ test('every level and every tag is carried by at least one molecule', () => {
 });
 
 test('the worked examples end on the three molecules that disagree', () => {
-  expect(CALCULATOR_EXAMPLES).toHaveLength(8);
+  expect(CALCULATOR_EXAMPLES).toHaveLength(9);
   const disagreeing = CALCULATOR_EXAMPLES.filter(
     (entry) => formulaOf(entry.mf).dbe !== entry.dbe,
   );

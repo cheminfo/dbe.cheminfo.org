@@ -73,7 +73,13 @@
   text-transform: uppercase;
 }
 
+/* The subject takes whatever height is left, so the number and the sentence
+   under it sit on the same line in both cards however tall the drawing is. */
 .learn-readout__subject {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
   font-size: 1.15rem;
 }
 
@@ -233,6 +239,15 @@
   font-size: 1.75rem;
 }
 
+/* Which valence the formula is read at. It sits with the formula rather than
+   in the prose: it is part of the question, and a student reading C2H6OS
+   cannot answer without it. */
+.exercise-card__assumption {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
 .exercise-card__actions {
   display: flex;
   flex-wrap: wrap;
@@ -381,12 +396,43 @@
   font-size: 0.8125rem;
 }
 
-/* A formula is the line the eye lands on, so it keeps its size on a narrow
-   window and scrolls rather than wrapping in the middle of a sum. */
+/* A formula is the line the eye lands on, so it never wraps in the middle of a
+   sum.
+
+   KaTeX paints a few pixels past the box it reports — the rule of a fraction,
+   the top of a sum — and a scrolled axis makes the other one `auto`, so the
+   sheet grew a vertical scrollbar on a formula that fits. The padding holds
+   what KaTeX overdraws, and the vertical axis is then shut: there is nothing
+   left to scroll to, and nothing is clipped. */
 .sheet-rule__display {
   display: block;
+  padding: 6px 0;
   overflow-x: auto;
-  padding: 2px 0;
+  overflow-y: hidden;
+}
+
+/* Thirteen terms on one line do not fit across a phone at any size worth
+   reading, so the fraction gives up some size and then scrolls. The shadow is
+   what says there is more to the right: a term nobody knows is there is a term
+   that is not on the sheet. */
+@media (width <= 40rem) {
+  .sheet-rule__display {
+    font-size: 0.7em;
+    background:
+      linear-gradient(to right, var(--surface) 30%, transparent) left / 2rem
+        100% no-repeat,
+      linear-gradient(to left, var(--surface) 30%, transparent) right / 2rem
+        100% no-repeat,
+      radial-gradient(farthest-side at 0 50%, rgb(16 32 48 / 18%), transparent)
+        left / 0.5rem 100% no-repeat,
+      radial-gradient(
+          farthest-side at 100% 50%,
+          rgb(16 32 48 / 18%),
+          transparent
+        )
+        right / 0.5rem 100% no-repeat;
+    background-attachment: local, local, scroll, scroll;
+  }
 }
 
 .sheet-rule__legend {
@@ -450,8 +496,11 @@
     font-size: 9px;
   }
 
+  /* The numerator is one line of thirteen terms, so it is sized to fit the
+     page rather than to be comfortable: on paper there is no scrolling, and a
+     term past the right edge is a term that is simply gone. */
   .sheet-rule__display {
-    font-size: 11px;
+    font-size: 9.5px;
   }
 
   .sheet-rule__term-label {
@@ -498,4 +547,22 @@
   .reference-section > span > span:first-child {
     flex-basis: 86px !important;
   }
+}
+
+/* ── A glossary example ──────────────────────────────────────────────────── */
+
+/* The formula, then the structure it is read against. The definition opens on
+   a dark tooltip and a depiction is drawn in dark ink, so the drawing carries
+   the light plate with it and reads the same on the glossary page. */
+.glossary-example {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.glossary-example__drawing {
+  display: inline-flex;
+  padding: 2px;
+  border-radius: 6px;
+  background: var(--surface);
 }

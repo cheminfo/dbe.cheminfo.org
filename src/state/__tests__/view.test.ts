@@ -61,21 +61,22 @@ test('the three layers are named once, and the working is on by default', () => 
   ).toStrictEqual(['breakdown', 'highlight']);
 });
 
-test('the formula box follows the drawing until the student types in it', () => {
+test('a stroke writes the formula box, and typing parts the two again', () => {
   setStructure('CS(C)=O', 'C2H6OS');
 
   expect(view.calculator.structure.value).toBe('CS(C)=O');
   expect(view.calculator.formula.value).toBe('C2H6OS');
 
-  setFormula('C2H6O2S');
+  setFormula('C10H20');
 
   expect(view.calculator.formulaSource.value).toBe('typed');
 
-  // The next stroke leaves the typed formula alone: it is the input the
-  // comparison on screen is about.
+  // The next stroke writes the box: the drawing is the newer of the two
+  // inputs, and nothing has to be clicked to read its formula.
   setStructure('CS(C)(=O)=O', 'C2H6O2S');
 
   expect(view.calculator.formula.value).toBe('C2H6O2S');
+  expect(view.calculator.formulaSource.value).toBe('structure');
 
   adoptStructureFormula('C2H6O2S');
 

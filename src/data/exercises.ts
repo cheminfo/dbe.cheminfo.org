@@ -26,17 +26,28 @@ export type {
 export { FORMULA_EXERCISES } from './exercises/formula.ts';
 export { STRUCTURE_EXERCISES } from './exercises/structure.ts';
 
-/**
- * The deck, formula questions first.
- *
- * Both directions are offered from the first screen rather than gated behind
- * each other: a student arriving from a mass spectrum wants the formula deck
- * and a student arriving from a drawing wants the other one.
- */
-export const EXERCISES: readonly DbeExercise[] = [
-  ...FORMULA_EXERCISES,
-  ...STRUCTURE_EXERCISES,
+/** The three levels, in the order a student meets them. */
+const LEVELS: readonly ExerciseLevel[] = [
+  'beginner',
+  'intermediate',
+  'advanced',
 ];
+
+/**
+ * The deck, easiest first.
+ *
+ * The list runs beginner to advanced across both directions rather than deck
+ * after deck: a student works down it, and a deck boundary halfway through
+ * sends them back to a beginner's sum after an advanced one. Within a level
+ * the formula questions come first, so both directions are offered from the
+ * first screen — one student arrives from a mass spectrum, another from a
+ * drawing.
+ */
+export const EXERCISES: readonly DbeExercise[] = LEVELS.flatMap((level) =>
+  [...FORMULA_EXERCISES, ...STRUCTURE_EXERCISES].filter(
+    (exercise) => exercise.level === level,
+  ),
+);
 
 /** Their ids, for the progress bar, the route table and the crawl path. */
 export const EXERCISE_IDS: readonly string[] = EXERCISES.map(

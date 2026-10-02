@@ -11,14 +11,9 @@
 import { Card } from '@blueprintjs/core';
 import { useSignals } from '@preact/signals-react/runtime';
 import type { ReactElement } from 'react';
-import {
-  GlossaryProvider,
-  PagePart,
-  TutorialStepStrip,
-} from 'react-cheminfo/ui';
+import { PagePart, TutorialStepStrip } from 'react-cheminfo/ui';
 
 import { LearnStep } from '../components/learn/LearnStep.tsx';
-import { GLOSSARY } from '../data/glossary.ts';
 import {
   LEARN_LEVELS,
   LEARN_SECTIONS,
@@ -39,28 +34,26 @@ export function Learn(): ReactElement {
   const index = Math.max(learnSectionIndex(section.id), 0);
 
   return (
-    <GlossaryProvider glossary={GLOSSARY}>
-      <section className="learn">
-        <PagePart part="steps">
-          <Card compact className="learn__steps no-print">
-            <TutorialStepStrip
-              steps={LEARN_SECTIONS}
-              activeIndex={index}
-              levelLabels={LEARN_LEVELS}
-              onSelect={(position) => {
-                setLearnSection(LEARN_SECTIONS[position]?.id ?? null);
-              }}
-            />
-          </Card>
-        </PagePart>
+    <section className="learn">
+      <PagePart part="steps">
+        <Card compact className="learn__steps no-print">
+          <TutorialStepStrip
+            steps={LEARN_SECTIONS}
+            activeIndex={index}
+            levelLabels={LEARN_LEVELS}
+            onSelect={(position) => {
+              setLearnSection(LEARN_SECTIONS[position]?.id ?? null);
+            }}
+          />
+        </Card>
+      </PagePart>
 
-        <LearnStep
-          key={section.id}
-          section={section}
-          position={index + 1}
-          total={LEARN_SECTIONS.length}
-        />
-      </section>
-    </GlossaryProvider>
+      <LearnStep
+        key={section.id}
+        section={section}
+        position={index + 1}
+        total={LEARN_SECTIONS.length}
+      />
+    </section>
   );
 }

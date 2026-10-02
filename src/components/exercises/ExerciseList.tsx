@@ -15,6 +15,7 @@ import {
   ExerciseLevelTag,
   ExerciseProgressHeader,
   ExerciseStatusIcon,
+  InlineText,
   useListKeyboardNavigation,
 } from 'react-cheminfo/ui';
 
@@ -97,7 +98,9 @@ export function ExerciseList(props: ExerciseListProps): ReactElement {
                 status={status}
                 title={STATUS_TITLE[status]}
               />
-              <span className="exercise-deck__title">{exercise.title}</span>
+              <span className="exercise-deck__title">
+                <InlineText text={exercise.title} />
+              </span>
               {/*
                 The tags travel together: left loose in the row, a long title
                 strands the level tag at the right of one line and drops the

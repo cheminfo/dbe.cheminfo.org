@@ -16,13 +16,12 @@ import { Callout } from '@blueprintjs/core';
 import { useSignals } from '@preact/signals-react/runtime';
 import type { ReactElement } from 'react';
 import { useMemo } from 'react';
-import { GlossaryProvider, PagePart, useIsHidden } from 'react-cheminfo/ui';
+import { PagePart, useIsHidden } from 'react-cheminfo/ui';
 
 import { ExerciseCard } from '../components/exercises/ExerciseCard.tsx';
 import { ExerciseList } from '../components/exercises/ExerciseList.tsx';
 import { SeriesControls } from '../components/exercises/SeriesControls.tsx';
 import { EXERCISES, exerciseById } from '../data/exercises.ts';
-import { GLOSSARY } from '../data/glossary.ts';
 import { generateSeries } from '../dbe/index.ts';
 import { setActiveExercise, state } from '../state/index.ts';
 
@@ -55,39 +54,37 @@ export function Exercises(): ReactElement {
   const aside = !isHidden('list') || !isHidden('series');
 
   return (
-    <GlossaryProvider glossary={GLOSSARY}>
-      <section className="exercises-layout">
-        {aside && (
-          <div className="exercises-sidebar">
-            <PagePart part="series">
-              <SeriesControls />
-            </PagePart>
-            <PagePart part="list">
-              <ExerciseList
-                exercises={deck}
-                activeId={open?.id ?? null}
-                onSelect={setActiveExercise}
-              />
-            </PagePart>
-          </div>
-        )}
-
-        <div className="exercises-open">
-          {open === undefined ? (
-            <Callout
-              intent="primary"
-              icon="properties"
-              title={isHidden('list') ? 'No question here' : 'Pick a question'}
-            >
-              {isHidden('list')
-                ? 'This link names no question. A question is addressed by its id, after /exercises/.'
-                : `${deck.length} questions in both directions: read the count off a formula, or off a drawing. Each is marked against what the site itself counts, so the working is the answer.`}
-            </Callout>
-          ) : (
-            <ExerciseCard key={open.id} exercise={open} />
-          )}
+    <section className="exercises-layout">
+      {aside && (
+        <div className="exercises-sidebar">
+          <PagePart part="series">
+            <SeriesControls />
+          </PagePart>
+          <PagePart part="list">
+            <ExerciseList
+              exercises={deck}
+              activeId={open?.id ?? null}
+              onSelect={setActiveExercise}
+            />
+          </PagePart>
         </div>
-      </section>
-    </GlossaryProvider>
+      )}
+
+      <div className="exercises-open">
+        {open === undefined ? (
+          <Callout
+            intent="primary"
+            icon="properties"
+            title={isHidden('list') ? 'No question here' : 'Pick a question'}
+          >
+            {isHidden('list')
+              ? 'This link names no question. A question is addressed by its id, after /exercises/.'
+              : `${deck.length} questions in both directions: read the count off a formula, or off a drawing. Each is marked against what the site itself counts, so the working is the answer.`}
+          </Callout>
+        ) : (
+          <ExerciseCard key={open.id} exercise={open} />
+        )}
+      </div>
+    </section>
   );
 }

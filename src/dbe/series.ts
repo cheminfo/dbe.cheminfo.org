@@ -19,15 +19,13 @@
 import { XSadd } from 'ml-xsadd';
 import type { ExerciseLevel } from 'react-cheminfo/core';
 
-import type {
-  DbeExercise,
-  FormulaExercise,
-  StructureExercise,
-} from '../data/exercises/types.ts';
+import type { DbeExercise } from '../data/exercises/types.ts';
 import { MOLECULE_POOL } from '../data/molecules.ts';
 
-import { formatDbe } from './format.ts';
 import { dbeOfFormula } from './formula.ts';
+import { formulaExerciseLevel } from './level.ts';
+import { formulaQuestion, structureQuestion } from './question.ts';
+import type { ValenceChoices } from './types.ts';
 
 /** Which direction a generated series asks in. */
 export type SeriesDirection = 'formula' | 'structure' | 'both';
@@ -48,7 +46,7 @@ export interface SeriesOptions {
 }
 
 /** What a generated question needs of a molecule. */
-interface SeriesSource {
+export interface SeriesSource {
   /** Stable and URL-safe. */
   id: string;
   /** What it is called. */
@@ -59,6 +57,12 @@ interface SeriesSource {
   mf: string;
   /** What its drawing counts. */
   dbe: number;
+  /**
+   * The valences at which the formula rule also gives {@link dbe}, for a
+   * molecule that expands an octet.
+   * @default undefined — the standard table already agrees with the drawing
+   */
+  valences?: ValenceChoices;
   /** How hard it is. */
   level: ExerciseLevel;
 }
@@ -86,7 +90,7 @@ export function generateSeries(options: SeriesOptions): readonly DbeExercise[] {
       options.direction === 'formula' ||
       (options.direction === 'both' && position % 2 === 0);
     series.push(
-      asFormula && agreesOnPaper(entry)
+      asFormula && answerableOnPaper(entry)
         ? formulaQuestion(id, entry)
         : structureQuestion(id, entry),
     );
@@ -120,67 +124,44 @@ export function isSeriesExerciseId(id: string): boolean {
 /** Every pool entry a series with these options may draw. */
 function poolFor(options: SeriesOptions): readonly SeriesSource[] {
   const pool: readonly SeriesSource[] = MOLECULE_POOL;
-  const levelled =
-    options.level === 'mixed'
-      ? pool
-      : keep(pool, (entry) => entry.level === options.level);
+  const levelled = keep(pool, (entry) => fitsLevel(entry, options));
   const wide = levelled.length === 0 ? pool : levelled;
   if (options.direction !== 'formula') return wide;
-  const paper = keep(wide, agreesOnPaper);
-  return paper.length === 0 ? keep(pool, agreesOnPaper) : paper;
+  const paper = keep(wide, answerableOnPaper);
+  return paper.length === 0 ? keep(pool, answerableOnPaper) : paper;
 }
 
 /**
- * Whether the standard table already gives this molecule's drawn count.
+ * Whether an entry is of the level this series asked for, in the direction it
+ * will be asked in.
  *
- * It is the hypervalent sulfur and phosphorus this sorts out: their formula is
- * a lower bound rather than an answer, so a generated question would be asking
- * for a number the student cannot reach from what is shown.
+ * A formula question is levelled by its **elements** — nitrogen and the
+ * halogens one step up, sulfur and phosphorus another — because that is all
+ * the student is shown; a drawing keeps the level written on the entry. A
+ * series that asks both ways therefore needs both to agree, or a question
+ * would carry a colour its own card contradicts.
  */
-function agreesOnPaper(entry: SeriesSource): boolean {
-  return dbeOfFormula(entry.mf) === entry.dbe;
+function fitsLevel(entry: SeriesSource, options: SeriesOptions): boolean {
+  if (options.level === 'mixed') return true;
+  const byFormula = formulaExerciseLevel(entry.mf) === options.level;
+  const byDrawing = entry.level === options.level;
+  if (options.direction === 'formula') return byFormula;
+  if (options.direction === 'structure') return byDrawing;
+  return byFormula && byDrawing;
 }
 
-function formulaQuestion(id: string, entry: SeriesSource): FormulaExercise {
-  return {
-    id,
-    kind: 'formula',
-    title: `Read the formula ${entry.mf}`,
-    level: entry.level,
-    description: `Give the degree of unsaturation of ${entry.mf} from the formula alone. Open the structure once your answer is in and see how it was spent.`,
-    hints: [
-      'Oxygen adds nothing and a halogen counts exactly like a hydrogen, so strike those out first.',
-      'Carbon adds 1, hydrogen takes away a half, nitrogen and phosphorus add a half — then add 1 for the molecule itself.',
-    ],
-    solution: `${entry.mf} counts ${formatDbe(entry.dbe)}, and the drawing behind it is ${entry.name}.`,
-    mf: entry.mf,
-    expected: { dbe: entry.dbe },
-    smiles: entry.smiles,
-  };
-}
-
-function structureQuestion(id: string, entry: SeriesSource): StructureExercise {
-  const onPaper = dbeOfFormula(entry.mf);
-  const disagrees =
-    onPaper !== null && onPaper !== entry.dbe
-      ? ` Its formula ${entry.mf} says ${formatDbe(onPaper)}, because the table counts every atom at its standard valence.`
-      : '';
-  return {
-    id,
-    kind: 'structure',
-    title: `Count the drawing of ${entry.name}`,
-    level: entry.level,
-    description: `Count the rings and the pi bonds of this structure and give the total.`,
-    hints: [
-      'Count the rings first: a ring is worth exactly as much as a double bond.',
-      'Then add 1 for every double bond and 2 for every triple bond.',
-    ],
-    solution: `${entry.name} counts ${formatDbe(entry.dbe)}.${disagrees}`,
-    smiles: entry.smiles,
-    name: entry.name,
-    mf: entry.mf,
-    expected: { dbe: entry.dbe },
-  };
+/**
+ * Whether a formula question about this molecule has an answer the student can
+ * reach from what is shown.
+ *
+ * It is the hypervalent sulfur and phosphorus this sorts out. Their formula is
+ * a lower bound at the standard table, so the question states the valence it
+ * is asked at — `the S as S(VI)` — and is then answerable like any other; an
+ * entry whose declared valences still miss its drawing is asked as a drawing
+ * instead, because nothing written on the card would reach the number.
+ */
+function answerableOnPaper(entry: SeriesSource): boolean {
+  return dbeOfFormula(entry.mf, { valences: entry.valences }) === entry.dbe;
 }
 
 /**

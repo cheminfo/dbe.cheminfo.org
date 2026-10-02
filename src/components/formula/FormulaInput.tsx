@@ -2,10 +2,9 @@
  * The box a molecular formula is typed in, with the line under it saying what
  * was read or why nothing was.
  *
- * The box is filled from the drawing while nobody has typed in it, and stops
- * following the moment somebody does — otherwise the tool would overwrite the
- * very input the comparison is about. When the two have parted, the line offers
- * the drawing's formula back rather than taking it silently.
+ * The box is filled from the drawing as the drawing is made, and stops
+ * following the moment somebody types in it. When the two have parted, the line
+ * offers the drawing's formula back rather than taking it silently.
  */
 
 import { Button, InputGroup } from '@blueprintjs/core';

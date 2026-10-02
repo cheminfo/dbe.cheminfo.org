@@ -1,78 +1,87 @@
 /**
- * The rule in full, with sulfur and phosphorus left as valences.
+ * The rule as one fraction: every possibility above the bar, a single division
+ * by two below it, and one unit per separate molecule in front.
+ *
+ * Everything above the bar is in **half-DBE units**, which is what makes every
+ * coefficient a whole number — carbon adds 2, hydrogen takes 1 away, oxygen
+ * adds 0 — and leaves one visible halving at the end rather than a fraction on
+ * every term. The charge sits there for the same reason: it is already in
+ * those units.
  *
  * The cheatsheet opens on it, so it is written here rather than typed into the
- * page: every coefficient is held against the valence table of `valences.ts`
- * in a unit test, and the sulfur and phosphorus lines are generated from
- * {@link VALENCE_OPTIONS}. A sheet a student takes into an exam room may not
- * drift from the table the tool counts on.
+ * page: no coefficient is written down at all. Each one is `valence − 2`, read
+ * out of {@link DEFAULT_VALENCES} for the elements nobody chooses and out of
+ * {@link VALENCE_OPTIONS} for sulfur and phosphorus, and a unit test holds the
+ * result against both tables. A sheet a student takes into an exam room may
+ * not drift from the table the tool counts on.
  *
- * `X` stands for the halogens and `M` for the alkali metals, because a line
- * naming all seven is a line nobody reads; {@link RuleGroup.symbols} keeps the
+ * `X` stands for the halogens and `M` for the alkali metals, because a term
+ * naming all seven is a term nobody reads; {@link RuleGroup.symbols} keeps the
  * elements themselves, which is what the test recomputes.
  */
 
-import { formatHalf } from './format.ts';
 import type { ValenceOption } from './types.ts';
-import { VALENCE_OPTIONS } from './valences.ts';
+import { DEFAULT_VALENCES, VALENCE_OPTIONS } from './valences.ts';
 
 /** The rule as it is stated: one per part, half the charge, half every (v − 2). */
 export const GENERAL_RULE_TEX = String.raw`\displaystyle \mathrm{DBE} = F + \frac{q}{2} + \frac{1}{2}\sum_i n_i\left(v_i - 2\right)`;
 
-/** The elements the written rule leaves as a valence, in reading order. */
+/** The elements whose valence the reader chooses, in reading order. */
 export const OPEN_VALENCE_SYMBOLS: readonly string[] = ['S', 'P'];
 
-/** One term of the written-out rule: the elements it covers, all worth the same. */
+/** One count of the numerator whose valence nobody chooses. */
 export interface RuleGroup {
   /** What the term is called, for a test naming the one that failed. */
   readonly id: string;
+  /** What is counted, as the fraction labels it: `C`, `X`, `M`. */
+  readonly label: string;
   /** The elements it stands for, as the valence table names them. */
   readonly symbols: readonly string[];
-  /** How the counts are written, `X` and `M` standing for whole columns. */
-  readonly counts: readonly string[];
-  /** What one atom of the group is worth, in DBE. */
-  readonly contribution: number;
 }
 
 /**
- * The elements whose valence nobody chooses, grouped by what they are worth.
+ * The elements whose valence nobody chooses, one count each, in reading order.
  *
- * Oxygen is listed although it is worth nothing: a reader who does not see it
- * assumes it was forgotten, and the written rule leaves it out precisely
- * because it contributes 0.
+ * Oxygen is here although its coefficient is 0: a reader who does not see
+ * oxygen assumes it was forgotten, and seeing the 0 is what teaches that
+ * counting it changes nothing. Silicon holds carbon's four bonds and the
+ * alkali metals hydrogen's one, so each gets a count rather than a footnote.
  */
 export const RULE_GROUPS: readonly RuleGroup[] = [
-  {
-    id: 'tetravalent',
-    symbols: ['C', 'Si'],
-    counts: [String.raw`n_{\mathrm{C}}`, String.raw`n_{\mathrm{Si}}`],
-    contribution: 1,
-  },
-  {
-    id: 'trivalent',
-    symbols: ['N'],
-    counts: [String.raw`n_{\mathrm{N}}`],
-    contribution: 0.5,
-  },
-  {
-    id: 'divalent',
-    symbols: ['O'],
-    counts: [String.raw`n_{\mathrm{O}}`],
-    contribution: 0,
-  },
-  {
-    id: 'monovalent',
-    symbols: ['H', 'F', 'Cl', 'Br', 'I', 'Li', 'Na', 'K'],
-    counts: [
-      String.raw`n_{\mathrm{H}}`,
-      String.raw`n_{\mathrm{X}}`,
-      String.raw`n_{\mathrm{M}}`,
-    ],
-    contribution: -0.5,
-  },
+  { id: 'carbon', label: 'C', symbols: ['C'] },
+  { id: 'silicon', label: 'Si', symbols: ['Si'] },
+  { id: 'nitrogen', label: 'N', symbols: ['N'] },
+  { id: 'oxygen', label: 'O', symbols: ['O'] },
+  { id: 'hydrogen', label: 'H', symbols: ['H'] },
+  { id: 'halogens', label: 'X', symbols: ['F', 'Cl', 'Br', 'I'] },
+  { id: 'alkali', label: 'M', symbols: ['Li', 'Na', 'K'] },
 ];
 
-/** The same rule with every fixed valence substituted, S and P left open. */
+/** One term above the bar, in half-DBE units. */
+export interface NumeratorTerm {
+  /** Whether the valence is assumed, or is one the reader picks. */
+  readonly kind: 'fixed' | 'chosen';
+  /** What is counted, as the fraction labels it: `C`, `X`, `S(VI)`. */
+  readonly label: string;
+  /** The elements it stands for, as the valence table names them. */
+  readonly symbols: readonly string[];
+  /** The valence they are counted at. */
+  readonly valence: number;
+  /** `valence − 2`: what one such atom adds above the bar. */
+  readonly coefficient: number;
+}
+
+/**
+ * Every term above the bar, in the order the fraction writes them: worth most
+ * first, from the 4 a sulfone's sulfur adds down to the 1 a hydrogen takes
+ * away.
+ *
+ * The three sulfur terms are not three sulfurs: each atom is counted once, in
+ * whichever of them the reader puts it.
+ */
+export const NUMERATOR_TERMS: readonly NumeratorTerm[] = buildNumerator();
+
+/** The whole rule as one fraction, the charge above the bar with the rest. */
 export const WRITTEN_RULE_TEX: string = writeRule();
 
 /** What a letter of the two formulas stands for. */
@@ -85,85 +94,127 @@ export interface RuleSymbol {
 
 /** The legend under the two formulas, in the order the letters appear. */
 export const RULE_LEGEND: readonly RuleSymbol[] = [
-  { tex: 'F', meaning: 'separate molecules — a hydrate is two' },
+  { tex: 'F', meaning: 'separate molecules — the +1, and a hydrate is two' },
   { tex: 'q', meaning: 'the total charge, added not subtracted' },
   { tex: 'n_i', meaning: 'how many atoms of that element' },
   { tex: 'v_i', meaning: 'the valence it is counted at' },
+  {
+    tex: countTex('S(VI)'),
+    meaning: 'how many S you count at six bonds',
+  },
   { tex: String.raw`\mathrm{X}`, meaning: 'F, Cl, Br, I' },
   { tex: String.raw`\mathrm{M}`, meaning: 'Li, Na, K' },
 ];
 
-/** One valence an element can be counted at, and what it makes that atom worth. */
-export interface ValenceTerm {
-  /** How a chemist says it: `S(IV)`. */
-  readonly label: string;
-  /** The valence itself. */
-  readonly valence: number;
-  /** What one such atom is worth, in DBE. */
-  readonly contribution: number;
-  /** That contribution, signed, in LaTeX. */
-  readonly tex: string;
+/**
+ * What one atom of a given valence adds above the bar.
+ *
+ * This is the whole rule: a tetravalent carbon adds 2, a monovalent hydrogen
+ * takes 1 away, a divalent oxygen adds nothing. It is written once, here.
+ * @param valence - How many bonds the atom makes.
+ * @returns The coefficient, in half-DBE units.
+ */
+export function numeratorCoefficient(valence: number): number {
+  return valence - 2;
 }
 
 /**
- * Every valence one of {@link OPEN_VALENCE_SYMBOLS} can be counted at, with
- * what each is worth.
- * @param symbol - The element symbol.
- * @returns Its valences, in the order the site offers them.
+ * An element's valences, the one that contributes most written first.
+ * @param options - The valences it can be counted at.
+ * @returns The same list, highest valence first.
  */
-export function valenceTerms(symbol: string): readonly ValenceTerm[] {
-  const options: readonly ValenceOption[] = VALENCE_OPTIONS[symbol] ?? [];
-  const terms: ValenceTerm[] = [];
-  for (const option of options) {
+export function highestFirst(
+  options: readonly ValenceOption[],
+): readonly ValenceOption[] {
+  return options.toSorted((left, right) => right.valence - left.valence);
+}
+
+/**
+ * How a count is written: `n` with what it counts under it.
+ * @param label - What is counted: `C`, `X`, `S(VI)`.
+ * @returns The count, in LaTeX.
+ */
+export function countTex(label: string): string {
+  return String.raw`n_{\mathrm{${label}}}`;
+}
+
+/**
+ * One term as the fraction writes it: `2\,n_{\mathrm{C}}`, `- 1\,n_{\mathrm{H}}`.
+ * @param coefficient - What one atom adds, in half-DBE units.
+ * @param count - The count, from {@link countTex}.
+ * @param leading - Whether it opens a line, so a `+` in front would be noise.
+ * @returns The term, in LaTeX.
+ */
+export function termTex(
+  coefficient: number,
+  count: string,
+  leading = false,
+): string {
+  const sign = coefficient < 0 ? '-' : '+';
+  const head = leading && sign === '+' ? '' : `${sign} `;
+  return String.raw`${head}${Math.abs(coefficient)}\,${count}`;
+}
+
+/** The fraction, assembled so no coefficient is written down. */
+function writeRule(): string {
+  const terms: string[] = [];
+  for (const term of NUMERATOR_TERMS) {
+    terms.push(
+      termTex(term.coefficient, countTex(term.label), terms.length === 0),
+    );
+  }
+  terms.push('+ q');
+  // One line, in one falling run from 4 down to -1: the reader is meant to see
+  // the whole rule at once and find their element by what it is worth. The
+  // display scrolls on a narrow screen rather than wrapping, because a term
+  // broken across two lines reads as two terms.
+  return String.raw`\displaystyle \mathrm{DBE} = \frac{${terms.join(' ')}}{2} + 1`;
+}
+
+/** Every term, the fixed valences first and the chosen ones highest first. */
+function buildNumerator(): readonly NumeratorTerm[] {
+  const terms: NumeratorTerm[] = [];
+  for (const group of RULE_GROUPS) {
+    const valence = groupValence(group);
     terms.push({
-      label: option.label,
-      valence: option.valence,
-      contribution: (option.valence - 2) / 2,
-      tex: contributionTex(option.valence),
+      kind: 'fixed',
+      label: group.label,
+      symbols: group.symbols,
+      valence,
+      coefficient: numeratorCoefficient(valence),
     });
   }
-  return terms;
+  for (const symbol of OPEN_VALENCE_SYMBOLS) {
+    for (const option of highestFirst(VALENCE_OPTIONS[symbol] ?? [])) {
+      terms.push({
+        kind: 'chosen',
+        label: option.label,
+        symbols: [symbol],
+        valence: option.valence,
+        coefficient: numeratorCoefficient(option.valence),
+      });
+    }
+  }
+  // Worth most first, down to the elements that take away: a reader looks up
+  // what their element is worth, and the run from 4 to -1 is the rule's shape.
+  // The sort is stable, so terms of equal worth keep the order above.
+  return terms.toSorted((left, right) => right.coefficient - left.coefficient);
 }
 
 /**
- * What one atom of a given valence is worth, signed: `0`, `+1`, `+\tfrac{3}{2}`.
- * @param valence - How many bonds the atom makes.
- * @returns The contribution, in LaTeX.
+ * The one valence a group's elements share.
+ * @throws {Error} When they do not, which means the group is not one term.
  */
-export function contributionTex(valence: number): string {
-  const half = valence - 2;
-  if (half % 2 === 0) return formatHalf(half / 2);
-  const sign = half < 0 ? '-' : '+';
-  return String.raw`${sign}\tfrac{${Math.abs(half)}}{2}`;
-}
-
-/** The written rule, assembled so no coefficient is typed twice. */
-function writeRule(): string {
-  const fixed: string[] = [];
-  for (const group of RULE_GROUPS) {
-    if (group.contribution !== 0) fixed.push(groupTex(group));
+function groupValence(group: RuleGroup): number {
+  const first = group.symbols[0] as string;
+  const valence = DEFAULT_VALENCES[first];
+  if (valence === undefined) {
+    throw new Error(`${group.id}: ${first} is not in the valence table`);
   }
-  const open: string[] = [];
-  for (const symbol of OPEN_VALENCE_SYMBOLS) open.push(openTex(symbol));
-  const head = String.raw`\mathrm{DBE} ={}& F + \frac{q}{2} ${fixed.join(' ')}`;
-  return String.raw`\displaystyle\begin{aligned}${head} \\ & ${open.join(' ')}\end{aligned}`;
-}
-
-/** One group as it is written: `+ n_{\mathrm{C}} + n_{\mathrm{Si}}`. */
-function groupTex(group: RuleGroup): string {
-  const sign = group.contribution < 0 ? '-' : '+';
-  const size = Math.abs(group.contribution);
-  if (size === 1) return `${sign} ${group.counts.join(` ${sign} `)}`;
-  const coefficient = String.raw`\tfrac{${size * 2}}{2}`;
-  const counts =
-    group.counts.length === 1
-      ? group.counts[0]
-      : String.raw`\left(${group.counts.join(' + ')}\right)`;
-  return `${sign} ${coefficient}${counts}`;
-}
-
-/** An element whose valence the reader chooses: `+ \frac{v_S - 2}{2} n_S`. */
-function openTex(symbol: string): string {
-  const letter = String.raw`\mathrm{${symbol}}`;
-  return String.raw`+ \frac{v_{${letter}} - 2}{2}\,n_{${letter}}`;
+  for (const symbol of group.symbols) {
+    if (DEFAULT_VALENCES[symbol] !== valence) {
+      throw new Error(`${group.id}: ${symbol} is not ${valence}-valent`);
+    }
+  }
+  return valence;
 }

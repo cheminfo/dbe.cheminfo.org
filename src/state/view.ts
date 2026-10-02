@@ -124,18 +124,16 @@ export function setFormula(mf: string): void {
  * Record what is on the canvas, without reloading the canvas.
  *
  * This is what a stroke calls, so it never touches
- * {@link view.calculator.editorRevision}. The formula box is rewritten only
- * while it is following the drawing: once a student has typed a formula of
- * their own, the tool must not overwrite the very input the comparison is
- * about.
+ * {@link view.calculator.editorRevision}. A caller that has read the formula
+ * off the canvas writes it into the box: the drawing is the newer of the two
+ * inputs, and a student who draws expects to read its formula without asking
+ * for it. Typing a formula afterwards parts the two again.
  * @param smiles - The structure; cut to what a link may carry.
  * @param mf - The formula read off it, when the caller has already read one.
  */
 export function setStructure(smiles: string, mf?: string): void {
   view.calculator.structure.value = cutToLength(smiles, MAX_STRUCTURE_LENGTH);
-  if (mf !== undefined && view.calculator.formulaSource.value === 'structure') {
-    view.calculator.formula.value = cutToLength(mf, MAX_MF_LENGTH);
-  }
+  if (mf !== undefined) adoptStructureFormula(mf);
 }
 
 /**

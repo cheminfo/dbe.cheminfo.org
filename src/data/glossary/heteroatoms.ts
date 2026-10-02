@@ -65,7 +65,7 @@ export const HETEROATOM_TERMS: Glossary = {
   sulfonamide: {
     title: 'Sulfonamide',
     summary:
-      'An SO2 group bridging a carbon and a nitrogen. Hexavalent sulfur again, so the formula reads two low.',
+      'An {{SO2}} group bridging a carbon and a nitrogen. Hexavalent sulfur again, so the formula reads two low.',
     examples: [
       {
         code: 'C6H8N2O2S',
@@ -82,7 +82,7 @@ export const HETEROATOM_TERMS: Glossary = {
   phosphine: {
     title: 'Phosphine',
     summary:
-      'A phosphorus holding three bonds, R3P. This is what the formula table assumes, so a phosphine reads correctly.',
+      'A phosphorus holding three bonds, {{R3P}}. This is what the formula table assumes, so a phosphine reads correctly.',
     examples: [
       {
         code: 'C18H15P',

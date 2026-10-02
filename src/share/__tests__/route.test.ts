@@ -31,7 +31,7 @@ test('a plain visit keeps a plain address', () => {
 });
 
 test('a link naming a setting already at its default writes it no more', () => {
-  expect(open('/exercises?count=8&level=mixed&direction=both')).toBe(
+  expect(open('/exercises?count=20&level=mixed&direction=both')).toBe(
     '/exercises',
   );
   expect(open('/?mf=&smiles=&valence=')).toBe('/');
@@ -60,15 +60,16 @@ test('a link carrying only a structure leaves the box following the drawing', ()
   expect(address()).toBe('/?smiles=c1ccccc1');
 });
 
-test('a link carrying a formula pins it, and the box stops following', () => {
+test('a link carrying a formula pins it until the canvas moves', () => {
   expect(open('/?mf=C6H6&smiles=c1ccccc1')).toBe('/?mf=C6H6&smiles=c1ccccc1');
   expect(state.view.calculator.formulaSource.value).toBe('typed');
 
-  // A stroke on the canvas now leaves the typed formula alone, which is the
-  // whole point: the comparison is about that formula.
+  // A stroke on the canvas writes the box, and the address goes back to
+  // carrying the structure alone.
   setStructure('c1ccccc1C', 'C7H8');
 
-  expect(state.view.calculator.formula.value).toBe('C6H6');
+  expect(state.view.calculator.formula.value).toBe('C7H8');
+  expect(address()).toBe('/?smiles=c1ccccc1C');
 });
 
 test('a section and a question keep their place in the path', () => {

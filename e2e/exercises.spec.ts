@@ -12,6 +12,7 @@
  */
 
 import { expect, test } from '@playwright/test';
+import { plainProse } from 'react-cheminfo/core';
 
 import { EXERCISES, FORMULA_EXERCISES } from '../src/data/exercises.ts';
 import { generateSeries } from '../src/dbe/series.ts';
@@ -62,6 +63,26 @@ test('the right answer is marked right, and counts towards the deck', async ({
   ).toBeVisible();
 });
 
+test('nothing is marked until the answer is handed in', async ({ page }) => {
+  await page.goto(ADDRESS);
+  const card = page.getByTestId('exercise-card');
+
+  // The right number is on screen, and the question has still not been
+  // answered: a card that goes green under the caret tells the student the
+  // answer instead of asking for it.
+  await page.getByTestId('answer-dbe').fill(RIGHT);
+  await expect(card).not.toContainText(`${RIGHT}: right.`);
+
+  await page.getByTestId('check-button').click();
+  await expect(card).toContainText(`${RIGHT}: right.`);
+
+  // Editing the box takes the marking away again, so the verdict always
+  // belongs to the answer that is written.
+  await page.getByTestId('answer-dbe').fill(WRONG);
+  await expect(card).not.toContainText(`${RIGHT}: right.`);
+  await expect(card).not.toContainText(`you answered ${WRONG}`);
+});
+
 test('a wrong answer is marked wrong and says what was wanted', async ({
   page,
 }) => {
@@ -87,8 +108,10 @@ test('the hints open one at a time, and stop at the last one', async ({
   const card = page.getByTestId('exercise-card');
   const reveal = card.getByRole('button', { name: /Reveal hint/ });
   const hints = QUESTION.hints.length;
-  const first = entryAt(QUESTION.hints, 0, 'hint');
-  const last = entryAt(QUESTION.hints, hints - 1, 'hint');
+  // The marks are what the page draws, not what it prints: a `{{C6H14}}` in a
+  // hint reaches the screen as a formula with its subscripts.
+  const first = plainProse(entryAt(QUESTION.hints, 0, 'hint'));
+  const last = plainProse(entryAt(QUESTION.hints, hints - 1, 'hint'));
   // A ladder is two to four rungs; one is the answer with a lightbulb on it,
   // and the two ends below would be the same hint.
   expect(hints).toBeGreaterThanOrEqual(2);
@@ -125,7 +148,7 @@ test('a seed hands the same set to everybody who opens the link', async ({
 }) => {
   // What the seeded generator produces, asked of the page rather than of
   // itself: the deck must be these questions, in this order.
-  const asked = SERIES_QUESTIONS.map((question) => question.title);
+  const asked = SERIES_QUESTIONS.map((question) => plainProse(question.title));
   const titles = page
     .getByTestId('exercise-list')
     .locator('.exercise-deck__title');
@@ -150,5 +173,7 @@ test('a question of a generated set is addressed like any other', async ({
 
   await page.goto(`/exercises/${third.id}?seed=${SERIES.seed}`);
 
-  await expect(page.getByTestId('exercise-card')).toContainText(third.title);
+  await expect(page.getByTestId('exercise-card')).toContainText(
+    plainProse(third.title),
+  );
 });

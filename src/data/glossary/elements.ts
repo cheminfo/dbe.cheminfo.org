@@ -19,12 +19,12 @@ export const ELEMENT_TERMS: Glossary = {
       {
         code: 'C7H5F3',
         input: 'FC(F)(F)c1ccccc1',
-        note: 'Reads as C7H8 would: DBE 4, the benzene ring alone.',
+        note: 'Reads as {{C7H8}} would: DBE 4, the benzene ring alone.',
       },
       {
         code: 'CHCl3',
         input: 'ClC(Cl)Cl',
-        note: 'Chloroform reads as CH4 would: DBE 0.',
+        note: 'Chloroform reads as {{CH4}} would: DBE 0.',
       },
     ],
   },
@@ -36,12 +36,12 @@ export const ELEMENT_TERMS: Glossary = {
       {
         code: 'C6H12O6',
         input: 'OCC1OC(O)C(O)C(O)C1O',
-        note: 'Glucose reads as C6H12 would: DBE 1, the ring.',
+        note: 'Glucose reads as {{C6H12}} would: DBE 1, the ring.',
       },
       {
         code: 'C4H10O',
         input: 'CCOCC',
-        note: 'An ether reads as C4H10 would: DBE 0.',
+        note: 'An ether reads as {{C4H10}} would: DBE 0.',
       },
     ],
   },
@@ -92,7 +92,7 @@ export const ELEMENT_TERMS: Glossary = {
       {
         code: 'C6H8N',
         input: '[NH3+]c1ccccc1',
-        note: 'Anilinium read as a neutral formula gives 3.5; written C6H8N(+) it gives 4, which is what the drawing counts.',
+        note: 'Anilinium read as a neutral formula gives 3.5; written {{C6H8N(+)}} it gives 4, which is what the drawing counts.',
       },
       {
         code: 'C2H3O2(-)',

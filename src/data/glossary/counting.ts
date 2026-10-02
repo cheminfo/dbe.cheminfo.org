@@ -4,8 +4,8 @@
  *
  * Every example is written the same way round — `code` is the molecular
  * formula and `input` the SMILES of the drawing it is read against — so the
- * default renderer prints `C6H10 on C1=CCCCC1` and a site renderer can send
- * the first to `react-mf` and the second to a depiction without inspecting it.
+ * site's renderer sends the first to `react-mf` and the second to a depiction
+ * without inspecting either. A reader is shown the structure, never the SMILES.
  */
 
 import type { Glossary } from 'react-cheminfo/core';

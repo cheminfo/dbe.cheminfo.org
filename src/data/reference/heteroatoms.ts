@@ -21,27 +21,27 @@ export const SULFUR_SECTION: DbeReferenceSection = {
   rows: [
     row(
       'R–S–R  (S II)',
-      'Contributes 0, and the table is right. Thiophene C4H4S reads 3 and counts 3.',
+      'Contributes 0, and the table is right. Thiophene {{C4H4S}} reads 3 and counts 3.',
       { mf: 'C4H4S', reads: 3, smiles: 'c1ccsc1', counts: 3 },
     ),
     row(
       'C=S  (S II)',
-      'A pi bond in both directions. Thiourea CH4N2S reads 1 and counts 1.',
+      'A pi bond in both directions. Thiourea {{CH4N2S}} reads 1 and counts 1.',
       { mf: 'CH4N2S', reads: 1, smiles: 'NC(N)=S', counts: 1 },
     ),
     row(
       'R–S(=O)–R  (S IV)',
-      'Worth +1, not 0. DMSO C2H6OS reads 0 and counts 1.',
+      'Worth +1, not 0. DMSO {{C2H6OS}} reads 0 and counts 1.',
       { mf: 'C2H6OS', reads: 0, smiles: 'CS(=O)C', counts: 1 },
     ),
     row(
       'R–SO2–R  (S VI)',
-      'Worth +2. Dimethyl sulfone C2H6O2S reads 0 and counts 2.',
+      'Worth +2. Dimethyl sulfone {{C2H6O2S}} reads 0 and counts 2.',
       { mf: 'C2H6O2S', reads: 0, smiles: 'CS(=O)(=O)C', counts: 2 },
     ),
     row(
       'R–SO2–NR2  (S VI)',
-      'Also +2. Sulfanilamide C6H8N2O2S reads 4 and counts 6.',
+      'Also +2. Sulfanilamide {{C6H8N2O2S}} reads 4 and counts 6.',
       {
         mf: 'C6H8N2O2S',
         reads: 4,
@@ -51,7 +51,7 @@ export const SULFUR_SECTION: DbeReferenceSection = {
     ),
     row(
       'R–SO3H  (S VI)',
-      'Also +2. Methanesulfonic acid CH4O3S reads 0 and counts 2.',
+      'Also +2. Methanesulfonic acid {{CH4O3S}} reads 0 and counts 2.',
       { mf: 'CH4O3S', reads: 0, smiles: 'CS(=O)(=O)O', counts: 2 },
     ),
     row(
@@ -61,7 +61,7 @@ export const SULFUR_SECTION: DbeReferenceSection = {
     ),
     row(
       'SF6',
-      'Six bonds and no pi bond. F6S reads −2, which is the rule breaking rather than a molecule; at S(VI) it reads 0.',
+      'Six bonds and no pi bond. {{F6S}} reads −2, which is the rule breaking rather than a molecule; at S(VI) it reads 0.',
       { mf: 'F6S', reads: -2, smiles: 'FS(F)(F)(F)(F)F', counts: 0 },
     ),
   ],
@@ -77,7 +77,7 @@ export const PHOSPHORUS_SECTION: DbeReferenceSection = {
   rows: [
     row(
       'R3P  (P III)',
-      'Worth +½, and the table is right. Triphenylphosphine C18H15P reads 12 and counts 12.',
+      'Worth +½, and the table is right. Triphenylphosphine {{C18H15P}} reads 12 and counts 12.',
       {
         mf: 'C18H15P',
         reads: 12,
@@ -87,7 +87,7 @@ export const PHOSPHORUS_SECTION: DbeReferenceSection = {
     ),
     row(
       'R3P=O  (P V)',
-      'Worth +1½. Triphenylphosphine oxide C18H15OP reads 12 and counts 13.',
+      'Worth +1½. Triphenylphosphine oxide {{C18H15OP}} reads 12 and counts 13.',
       {
         mf: 'C18H15OP',
         reads: 12,
@@ -97,10 +97,10 @@ export const PHOSPHORUS_SECTION: DbeReferenceSection = {
     ),
     row(
       '(RO)3P=O  (P V)',
-      'The same +1 over the rule. Trimethyl phosphate C3H9O4P reads 0 and counts 1.',
+      'The same +1 over the rule. Trimethyl phosphate {{C3H9O4P}} reads 0 and counts 1.',
       { mf: 'C3H9O4P', reads: 0, smiles: 'COP(=O)(OC)OC', counts: 1 },
     ),
-    row('H3PO4', 'Phosphoric acid H3O4P reads 0 and counts 1: one P=O.', {
+    row('H3PO4', 'Phosphoric acid {{H3O4P}} reads 0 and counts 1: one P=O.', {
       mf: 'H3O4P',
       reads: 0,
       smiles: 'OP(=O)(O)O',
@@ -108,7 +108,7 @@ export const PHOSPHORUS_SECTION: DbeReferenceSection = {
     }),
     row(
       '(RO)2P(=S)OR',
-      'A P=S counts like a P=O. Parathion C10H14NO5PS reads 5 and counts 6.',
+      'A P=S counts like a P=O. Parathion {{C10H14NO5PS}} reads 5 and counts 6.',
       {
         mf: 'C10H14NO5PS',
         reads: 5,
@@ -118,7 +118,7 @@ export const PHOSPHORUS_SECTION: DbeReferenceSection = {
     ),
     row(
       'PF5',
-      'F5P reads −1. A negative number is the trivalent assumption failing; at P(V) it reads 0.',
+      '{{F5P}} reads −1. A negative number is the trivalent assumption failing; at P(V) it reads 0.',
       { mf: 'F5P', reads: -1, smiles: 'FP(F)(F)(F)F', counts: 0 },
     ),
   ],

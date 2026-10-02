@@ -13,7 +13,7 @@ import type { PoolEntry } from './types.ts';
 export const PHOSPHORUS_POOL: readonly PoolEntry[] = [
   {
     id: 'triphenylphosphine',
-    name: 'Triphenylphosphine',
+    name: 'triphenylphosphine',
     smiles: 'c1ccccc1P(c1ccccc1)c1ccccc1',
     mf: 'C18H15P',
     dbe: 12,
@@ -25,7 +25,7 @@ export const PHOSPHORUS_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'triphenylphosphine-oxide',
-    name: 'Triphenylphosphine oxide',
+    name: 'triphenylphosphine oxide',
     smiles: 'c1ccccc1P(=O)(c1ccccc1)c1ccccc1',
     mf: 'C18H15OP',
     dbe: 13,
@@ -38,7 +38,7 @@ export const PHOSPHORUS_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'phosphoric-acid',
-    name: 'Phosphoric acid',
+    name: 'phosphoric acid',
     smiles: 'OP(=O)(O)O',
     mf: 'H3O4P',
     dbe: 1,
@@ -51,7 +51,7 @@ export const PHOSPHORUS_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'trimethyl-phosphate',
-    name: 'Trimethyl phosphate',
+    name: 'trimethyl phosphate',
     smiles: 'COP(=O)(OC)OC',
     mf: 'C3H9O4P',
     dbe: 1,

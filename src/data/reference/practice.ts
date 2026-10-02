@@ -35,12 +35,12 @@ export const SHORTCUT_SECTION: DbeReferenceSection = {
     ),
     row(
       'C#N, C#C',
-      '2 each: a triple bond is two pi bonds. Benzonitrile C7H5N reads 6.',
+      '2 each: a triple bond is two pi bonds. Benzonitrile {{C7H5N}} reads 6.',
       { mf: 'C7H5N', reads: 6, smiles: 'N#Cc1ccccc1', counts: 6 },
     ),
     row(
       'NO2',
-      '1, drawn charge-separated. Nitrogen cannot expand its octet, so nitrobenzene C6H5NO2 reads 5 and counts 5.',
+      '1, drawn charge-separated. Nitrogen cannot expand its octet, so nitrobenzene {{C6H5NO2}} reads 5 and counts 5.',
       {
         mf: 'C6H5NO2',
         reads: 5,
@@ -50,12 +50,12 @@ export const SHORTCUT_SECTION: DbeReferenceSection = {
     ),
     row(
       'fused pair',
-      'Naphthalene C10H8 is 7, not 8: the shared bond is counted once.',
+      'Naphthalene {{C10H8}} is 7, not 8: the shared bond is counted once.',
       { mf: 'C10H8', reads: 7, smiles: 'c1ccc2ccccc2c1', counts: 7 },
     ),
     row(
       'pyranose ring',
-      'Glucose C6H12O6 is 1. The aldehyde is closed into the ring and costs nothing extra.',
+      'Glucose {{C6H12O6}} is 1. The aldehyde is closed into the ring and costs nothing extra.',
       {
         mf: 'C6H12O6',
         reads: 1,
@@ -65,7 +65,7 @@ export const SHORTCUT_SECTION: DbeReferenceSection = {
     ),
     row(
       'independent rings',
-      'Bonds minus atoms plus one. Adamantane C10H16 is 3 and cubane C8H8 is 5.',
+      'Bonds minus atoms plus one. Adamantane {{C10H16}} is 3 and cubane {{C8H8}} is 5.',
       {
         mf: 'C10H16',
         reads: 3,
@@ -91,12 +91,12 @@ export const TRAP_SECTION: DbeReferenceSection = {
   rows: [
     row(
       'a negative DBE',
-      'A valence assumption is wrong. F6S reads −2 and F5P reads −1; both have no ring and no pi bond.',
+      'A valence assumption is wrong. {{F6S}} reads −2 and {{F5P}} reads −1; both have no ring and no pi bond.',
       { mf: 'F6S', reads: -2, smiles: 'FS(F)(F)(F)(F)F', counts: 0 },
     ),
     row(
       'a half-integer DBE',
-      'A charge or an odd electron was left out. C6H8N read as neutral gives 3.5; written C6H8N(+) it gives 4.',
+      'A charge or an odd electron was left out. {{C6H8N}} read as neutral gives 3.5; written {{C6H8N(+)}} it gives 4.',
       {
         mf: 'C6H8N(+)',
         reads: 4,
@@ -106,12 +106,12 @@ export const TRAP_SECTION: DbeReferenceSection = {
     ),
     row(
       'a radical',
-      'The drawing is right and the half is the warning: CH3 reads 0.5 and the methyl radical counts 0.',
+      'The drawing is right and the half is the warning: {{CH3}} reads 0.5 and the methyl radical counts 0.',
       { mf: 'CH3', reads: 0.5, smiles: '[CH3]', counts: 0 },
     ),
     row(
       'a sextet cation',
-      'The charge term overcounts by 1 when the charged atom has six electrons: CH3(+) reads 1 and the drawing counts 0.',
+      'The charge term overcounts by 1 when the charged atom has six electrons: {{CH3(+)}} reads 1 and the drawing counts 0.',
       { mf: 'CH3(+)', reads: 1, smiles: '[CH3+]', counts: 0 },
     ),
     row(
@@ -120,12 +120,12 @@ export const TRAP_SECTION: DbeReferenceSection = {
     ),
     row(
       'two parts in one formula',
-      'A salt or a hydrate is not one molecule: write the dot. C6H12O6.H2O reads 1 where the lumped C6H14O7 reads 0.',
+      'A salt or a hydrate is not one molecule: write the dot. {{C6H12O6.H2O}} reads 1 where the lumped {{C6H14O7}} reads 0.',
       { mf: 'C6H12O6.H2O', reads: 1 },
     ),
     row(
       '+ q/2, not − q/2',
-      'This site adds half the charge, so ammonium H4N(+) reads 0 and matches its drawing. Tools that subtract it read −1.',
+      'This site adds half the charge, so ammonium {{H4N(+)}} reads 0 and matches its drawing. Tools that subtract it read −1.',
       { mf: 'H4N(+)', reads: 0, smiles: '[NH4+]', counts: 0 },
     ),
     row(
@@ -134,7 +134,7 @@ export const TRAP_SECTION: DbeReferenceSection = {
     ),
     row(
       'isotopes',
-      'Mass does not change the count: C6H5D reads 4, exactly as benzene does.',
+      'Mass does not change the count: {{C6H5D}} reads 4, exactly as benzene does.',
       { mf: 'C6H5D', reads: 4, smiles: 'c1ccccc1', counts: 4 },
     ),
   ],

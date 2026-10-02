@@ -14,7 +14,7 @@ import type { PoolEntry } from './types.ts';
 export const OXYGEN_POOL: readonly PoolEntry[] = [
   {
     id: 'ethanol',
-    name: 'Ethanol',
+    name: 'ethanol',
     smiles: 'CCO',
     mf: 'C2H6O',
     dbe: 0,
@@ -26,7 +26,7 @@ export const OXYGEN_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'diethyl-ether',
-    name: 'Diethyl ether',
+    name: 'diethyl ether',
     smiles: 'CCOCC',
     mf: 'C4H10O',
     dbe: 0,
@@ -38,7 +38,7 @@ export const OXYGEN_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'acetone',
-    name: 'Acetone',
+    name: 'acetone',
     smiles: 'CC(C)=O',
     mf: 'C3H6O',
     dbe: 1,
@@ -50,7 +50,7 @@ export const OXYGEN_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'acetic-acid',
-    name: 'Acetic acid',
+    name: 'acetic acid',
     smiles: 'CC(=O)O',
     mf: 'C2H4O2',
     dbe: 1,
@@ -62,7 +62,7 @@ export const OXYGEN_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'phenol',
-    name: 'Phenol',
+    name: 'phenol',
     smiles: 'Oc1ccccc1',
     mf: 'C6H6O',
     dbe: 4,
@@ -74,7 +74,7 @@ export const OXYGEN_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'furan',
-    name: 'Furan',
+    name: 'furan',
     smiles: 'c1ccoc1',
     mf: 'C4H4O',
     dbe: 3,
@@ -86,7 +86,7 @@ export const OXYGEN_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'cyclohexanone',
-    name: 'Cyclohexanone',
+    name: 'cyclohexanone',
     smiles: 'O=C1CCCCC1',
     mf: 'C6H10O',
     dbe: 2,
@@ -98,7 +98,7 @@ export const OXYGEN_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'benzaldehyde',
-    name: 'Benzaldehyde',
+    name: 'benzaldehyde',
     smiles: 'O=Cc1ccccc1',
     mf: 'C7H6O',
     dbe: 5,
@@ -110,7 +110,7 @@ export const OXYGEN_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'glucose-pyranose',
-    name: 'Glucose, ring form',
+    name: 'glucose, ring form',
     smiles: 'OCC1OC(O)C(O)C(O)C1O',
     mf: 'C6H12O6',
     dbe: 1,
@@ -122,7 +122,7 @@ export const OXYGEN_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'glucose-open',
-    name: 'Glucose, open chain',
+    name: 'glucose, open chain',
     smiles: 'OCC(O)C(O)C(O)C(O)C=O',
     mf: 'C6H12O6',
     dbe: 1,
@@ -134,7 +134,7 @@ export const OXYGEN_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'aspirin',
-    name: 'Aspirin',
+    name: 'aspirin',
     smiles: 'CC(=O)Oc1ccccc1C(=O)O',
     mf: 'C9H8O4',
     dbe: 6,
@@ -146,7 +146,7 @@ export const OXYGEN_POOL: readonly PoolEntry[] = [
   },
   {
     id: 'camphor',
-    name: 'Camphor',
+    name: 'camphor',
     smiles: 'CC1(C)C2CCC1(C)C(=O)C2',
     mf: 'C10H16O',
     dbe: 3,
